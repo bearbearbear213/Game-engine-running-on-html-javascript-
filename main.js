@@ -541,8 +541,8 @@ var taglist = (name) => {
         for (this.self of Object.values(this.sprites)) {
           try {
             this.inner += `<div style="overflow: hidden;position:absolute;
-          top:${(this.self.y - this.seen.camera.y - (this.self.height / 2))}%;
-          left:${(this.self.x - this.seen.camera.x - (this.self.width / 2)) / 1.6}%;
+          top:${(this.self.y - this.seen.camera.y +50- (this.self.height / 2))}%;
+          left:${(this.self.x - this.seen.camera.x +80- (this.self.width / 2)) / 1.6}%;
           width:${this.self.width / 1.6}%;
           height:${this.self.height}%;${this.self.output_rect ? "background:rgb(255,255,255)" : ""}">${this.self.img}</div>`
           } catch (e) { }
