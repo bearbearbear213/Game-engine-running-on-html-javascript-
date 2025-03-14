@@ -519,7 +519,7 @@ var taglist = (name) => {
       this.seens = seen;
       this.fps = fps / 1000;
       this.update;
-      setInterval(() => {
+      this.drawing=setInterval(() => {
         this.inner = ""
         try{
         for (this.self of Object.values(this.sprites)) {
