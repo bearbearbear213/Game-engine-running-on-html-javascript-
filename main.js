@@ -514,11 +514,11 @@ var taglist = (name) => {
     }, fps = 60, startSeen = "main") {
       document.body.innerHTML += `<game_canvas style="overflow: hidden;background:rgb(0, 0, 0);width:160vh;height:100vh;position:absolute;top: 0px;left: 0px;"></game_canvas>`
       this.controller = new controller()
-      this.main = taglist("game_canvas")[0]
-      this.seenName = startSeen
-      this.seens = seen
-      this.fps = fps / 1000
-      this.update
+      this.main = taglist("game_canvas")[0];
+      this.seenName = startSeen;
+      this.seens = seen;
+      this.fps = fps / 1000;
+      this.update;
       this.drawing=setInterval(() => {
         this.inner = ""
         try{
