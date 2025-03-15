@@ -512,6 +512,7 @@ var taglist = (name) => {
         sprites: {}
       }
     }, fps = 60, startSeen = "main") {
+      console.log('gameEngineLoaded!');
       document.body.innerHTML += `<game_canvas style="overflow: hidden;background:rgb(0, 0, 0);width:160vh;height:100vh;position:absolute;top: 0px;left: 0px;"></game_canvas>`
       this.controller = new controller()
       this.main = taglist("game_canvas")[0];
@@ -598,7 +599,3 @@ var taglist = (name) => {
       this.restartUpdate()
     }
   }
-
-window.addEventListener('load', () => {
-        console.log('gameEngineLoaded!');
-})
