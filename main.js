@@ -536,6 +536,7 @@ var taglist = (name) => {
         this.main.innerHTML = this.inner
         }catch(e){}
       }, fps / 2)
+      console.log(this.drawing)
     }
     addSprite(name, sprite) {
       this.aS = this.self
@@ -597,3 +598,7 @@ var taglist = (name) => {
       this.restartUpdate()
     }
   }
+
+window.addEventListener('load', () => {
+        console.log('gameEngineLoaded!');
+})
