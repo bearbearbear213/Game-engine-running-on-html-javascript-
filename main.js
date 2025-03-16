@@ -529,6 +529,8 @@ var taglist = (name) => {
       this.fps = fps / 1000;
       this.update;
       this.drawing=setInterval(() => {
+        this.self = this.seen.background
+        this.main.style.background = this.self.color
         this.inner = ""
         try{
         for (this.self of Object.values(this.sprites)) {
@@ -576,7 +578,6 @@ var taglist = (name) => {
       this.stopping = false
       this.update = setInterval(() => {
         this.self = this.seen.background
-        this.main.style.background = this.self.color
         try { this.self.update(this.self) } catch (e) { }
         if (this.stopping) { return }
         this.n = 0
