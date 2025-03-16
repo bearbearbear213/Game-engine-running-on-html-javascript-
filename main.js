@@ -1,4 +1,5 @@
-var taglist = (name) => {
+
+  var taglist = (name) => {
     var objects = document.getElementsByTagName(name);
     for (var n in [...Array(objects.length)]) {
       objects[n] = objects[n];
@@ -48,20 +49,20 @@ var taglist = (name) => {
               ((e.clientX -
                 e.target.parentNode.getBoundingClientRect().x -
                 this.mouse_positionX) /
-                this.target_object.parentNode.getBoundingClientRect().width) *
+                e.target.parentNode.getBoundingClientRect().width) *
               100 +
               "%";
             this.target_object.style.top =
               ((e.clientY -
                 e.target.parentNode.getBoundingClientRect().y -
                 this.mouse_positionY) /
-                this.target_object.parentNode.getBoundingClientRect()
+                e.target.parentNode.getBoundingClientRect()
                   .height) *
               100 +
               "%";
           }
         });
-        this.k.addEventListener("pointerup", (e) => {
+        this.k.addEventListener("pointerleave", (e) => {
           if (
             !(this.target_object == null) &&
             e.target == this.target_object
@@ -70,24 +71,22 @@ var taglist = (name) => {
               ((e.clientX -
                 e.target.parentNode.getBoundingClientRect().x -
                 this.mouse_positionX) /
-                this.target_object.parentNode.getBoundingClientRect().width) *
+                e.target.parentNode.getBoundingClientRect().width) *
               100 +
               "%";
             this.target_object.style.top =
               ((e.clientY -
                 e.target.parentNode.getBoundingClientRect().y -
                 this.mouse_positionY) /
-                this.target_object.parentNode.getBoundingClientRect()
+                e.target.parentNode.getBoundingClientRect()
                   .height) *
               100 +
               "%";
-            this.target_object = null;
           }
         });
-        this.k.addEventListener("pointerleave", (e) => {
+        document.addEventListener("pointerup", (e) => {
           if (
-            !(this.target_object == null) &&
-            e.target == this.target_object
+            !(this.target_object == null) 
           ) {
             this.target_object = null;
           }
