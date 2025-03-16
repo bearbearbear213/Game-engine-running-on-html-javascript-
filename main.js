@@ -61,7 +61,7 @@ var taglist = (name) => {
               "%";
           }
         });
-        this.k.addEventListener("pointerup", (e) => {
+        document.addEventListener("pointerup", (e) => {
           if (
             !(this.target_object == null) &&
             e.target == this.target_object
