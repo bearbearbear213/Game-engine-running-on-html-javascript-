@@ -39,7 +39,7 @@ var taglist = (name) => {
               e.clientY - e.target.getBoundingClientRect().y;
           }
         });
-        this.k.addEventListener("pointermove", (e) => {
+        document.addEventListener("pointermove", (e) => {
           if (
             !(this.target_object == null) &&
             e.target == this.target_object
@@ -101,7 +101,7 @@ var taglist = (name) => {
               e.touches[0].clientY - e.target.getBoundingClientRect().y;
           }
         });
-        this.k.addEventListener("touchmove", (e) => {
+        document.addEventListener("touchmove", (e) => {
           if (
             !(this.target_object == null) &&
             e.target == this.target_object
