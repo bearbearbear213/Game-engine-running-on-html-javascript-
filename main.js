@@ -61,7 +61,7 @@ var taglist = (name) => {
               "%";
           }
         });
-        document.addEventListener("pointerup", (e) => {
+        this.k.addEventListener("pointerup", (e) => {
           if (
             !(this.target_object == null) &&
             e.target == this.target_object
@@ -81,6 +81,14 @@ var taglist = (name) => {
                   .height) *
               100 +
               "%";
+            this.target_object = null;
+          }
+        });
+        this.k.addEventListener("pointerleave", (e) => {
+          if (
+            !(this.target_object == null) &&
+            e.target == this.target_object
+          ) {
             this.target_object = null;
           }
         });
