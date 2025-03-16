@@ -91,7 +91,7 @@ var taglist = (name) => {
           ) {
             this.target_object = null;
           }
-        });
+        });/*
         this.k.addEventListener("touchstart", (e) => {
           if (this.objects.includes(e.target)) {
             this.target_object = e.target;
@@ -146,6 +146,7 @@ var taglist = (name) => {
             this.target_object = null;
           }
         });
+        */
       }
     }
   }
