@@ -86,7 +86,7 @@
         });
         document.addEventListener("pointerup", (e) => {
           if (
-            !(this.target_object == null) 
+            !(this.target_object == null)
           ) {
             this.target_object = null;
           }
@@ -512,10 +512,10 @@
       main: {
         background: {
           color: "rgb(255,255,0)",
-        },camera: {
-        x: 0,
-        y: 0,
-      },
+        }, camera: {
+          x: 0,
+          y: 0,
+        },
         sprites: {}
       }
     }, fps = 60, startSeen = "main") {
@@ -525,27 +525,29 @@
       this.main = taglist("game_canvas")[0];
       this.seenName = startSeen;
       this.seens = seen;
-      this.fps = fps / 1000;
+      console.log(this.fps = 1000/fps)
       this.update;
-      this.drawing=setInterval(() => {
+      this.updateFpsDate = Date.now()
+      this.drawing = setInterval(() => {
         this.self = this.seen.background
         this.main.style.background = this.self.color
         this.inner = ""
-        try{
-        for (this.self of Object.values(this.sprites)) {
-          try {
-              if(this.self.y - this.seen.camera.y>0&&this.self.y - this.seen.camera.y<100&&this.self.x - this.seen.camera.x>0&&this.self.x - this.seen.camera.x<160){
-            this.inner += `<div style="overflow: hidden;position:absolute;
+        try {
+          for (this.self of Object.values(this.sprites)) {
+            try {
+              if (this.self.y - this.seen.camera.y > 0 && this.self.y - this.seen.camera.y < 100 && this.self.x - this.seen.camera.x > 0 && this.self.x - this.seen.camera.x < 160) {
+                this.inner += `<div style="overflow: hidden;position:absolute;
           top:${(this.self.y - this.seen.camera.y - (this.self.height / 2))}%;
           left:${(this.self.x - this.seen.camera.x - (this.self.width / 2)) / 1.6}%;
           width:${this.self.width / 1.6}%;
           height:${this.self.height}%;${this.self.output_rect ? "background:rgb(255,255,255)" : ""}">${this.self.img}</div>`
-          }} catch (e) { }
-          this.n++
-        }
-        this.main.innerHTML = this.inner
-        }catch(e){}
-      }, fps / 2)
+              }
+            } catch (e) { }
+            this.n++
+          }
+          this.main.innerHTML = this.inner
+        } catch (e) { }
+      })
     }
     addSprite(name, sprite) {
       this.aS = this.self
@@ -576,19 +578,23 @@
     restartUpdate() {
       this.stopping = false
       this.update = setInterval(() => {
-        this.self = this.seen.background
-        try { this.self.update(this.self) } catch (e) { }
-        if (this.stopping) { return }
-        this.n = 0
-        for (this.self of Object.values(this.sprites)) {
-          this.playing = true
-          this.self.name = Object.keys(this.sprites)[this.n]
+        if ((Date.now() - this.updateFpsDate) > this.fps) {
+          ok(1000/(Date.now() - this.updateFpsDate))
+          this.updateFpsDate = Date.now()
+          this.self = this.seen.background
           try { this.self.update(this.self) } catch (e) { }
           if (this.stopping) { return }
-          this.n++
-          this.playing = false
+          this.n = 0
+          for (this.self of Object.values(this.sprites)) {
+            this.playing = true
+            this.self.name = Object.keys(this.sprites)[this.n]
+            try { this.self.update(this.self) } catch (e) { }
+            if (this.stopping) { return }
+            this.n++
+            this.playing = false
+          }
         }
-      }, this.fps)
+      })
     }
     changeSeen(to) {
       this.stopUpdate()
