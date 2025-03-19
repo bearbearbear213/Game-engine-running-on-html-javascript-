@@ -525,7 +525,7 @@
       this.main = taglist("game_canvas")[0];
       this.seenName = startSeen;
       this.seens = seen;
-      console.log(this.fps = 1000/fps)
+      this.fps = 1000/fps
       this.update;
       this.updateFpsDate = Date.now()
       this.drawing = setInterval(() => {
