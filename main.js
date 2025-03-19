@@ -579,7 +579,6 @@
       this.stopping = false
       this.update = setInterval(() => {
         if ((Date.now() - this.updateFpsDate) > this.fps) {
-          ok(1000/(Date.now() - this.updateFpsDate))
           this.updateFpsDate = Date.now()
           this.self = this.seen.background
           try { this.self.update(this.self) } catch (e) { }
