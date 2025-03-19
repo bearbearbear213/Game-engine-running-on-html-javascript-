@@ -1,3 +1,17 @@
+  var copy = (a) => {
+    var m = {}
+    var s = 0
+    for (n of Object.keys(a)) {
+      m[n] = Object.values(a)[s]
+      s++
+    }
+    return m
+  }
+  var make_angle = (angle, speed = 10) => {
+    const x = speed * Math.cos(angle)
+    const y = speed * Math.sin(angle)
+    return { x: x, y: y };
+  }
 
   var taglist = (name) => {
     var objects = document.getElementsByTagName(name);
