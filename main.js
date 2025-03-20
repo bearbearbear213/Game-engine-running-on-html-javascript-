@@ -1,12 +1,5 @@
-  var copy = (a) => {
-    var m = {}
-    var s = 0
-    for (n of Object.keys(a)) {
-      m[n] = Object.values(a)[s]
-      s++
-    }
-    return m
-  }
+
+  var copy = _.cloneDeep
   var make_angle = (angle, speed = 10) => {
     const x = speed * Math.cos(angle)
     const y = speed * Math.sin(angle)
@@ -21,18 +14,18 @@
     return objects;
   };
 
-    var gameEngineMakeMap=(engine,mapTile,mapDict,size=10,objectName="object")=>{
-      for(n in mapTile){
-        for(m in mapTile[n]){
-          if(!(mapDict[mapTile[n][m]]=="air")){
-            engine.addSprite(`${objectName}${n}/${m}`,copy(mapDict[mapTile[n][m]]))
-            engine.seen.sprites[`${objectName}${n}/${m}`].x=n*size
-            engine.seen.sprites[`${objectName}${n}/${m}`].y=m*size
-            engine.seen.sprites[`${objectName}${n}/${m}`].width=engine.seen.sprites[`object${n}/${m}`].height=size
-          }
+  var gameEngineMakeMap = (engine, mapTile, mapDict, size = 10, objectName = "object") => {
+    for (n in mapTile) {
+      for (m in mapTile[n]) {
+        if (!(mapDict[mapTile[n][m]] == "air")) {
+          engine.addSprite(`${objectName}${n}/${m}`, copy(mapDict[mapTile[n][m]]))
+          engine.seen.sprites[`${objectName}${n}/${m}`].x = m * size
+          engine.seen.sprites[`${objectName}${n}/${m}`].y = n * size
+          engine.seen.sprites[`${objectName}${n}/${m}`].width = engine.seen.sprites[`object${n}/${m}`].height = size
         }
       }
     }
+  }
   function col(rect1, rect2) {
     //     { x: 左上のx座標, y: 左上のy座標, width: 幅, height: 高さ }
     return !(
@@ -552,7 +545,7 @@
       this.main = taglist("game_canvas")[0];
       this.seenName = startSeen;
       this.seens = seen;
-      this.fps = 1000/fps
+      this.fps = 1000 / fps
       this.update;
       this.updateFpsDate = Date.now()
       this.drawing = setInterval(() => {
@@ -640,7 +633,7 @@
   }
 
 
-var textCange = (text) => {
+  var textCange = (text) => {
     return text.split("/")
   }
   class novelGame extends Game {
@@ -732,15 +725,15 @@ var textCange = (text) => {
       character = "character",
       texts = ["this is text", "this is second text"],
       color = "rgb(0,0,0)",
-      waitTime=100
+      waitTime = 100
     ) {
       this.openSpeech();
       this.stopUpdate();
       var l = "";
       var k = 0;
       var j = 0;
-      this.o = true;
-      var bd=Date.now()
+      this.o = this.controller.get().btn;
+      var bd = Date.now()
       await new Promise((resolve) => {
         var sm = 0
         var m = setInterval(() => {
@@ -753,10 +746,10 @@ var textCange = (text) => {
               j++;
             }
           } else {
-            if ((bd+waitTime)<Date.now()) {
+            if ((bd + waitTime) < Date.now()) {
               l += texts[j][k];
               k++;
-              bd=Date.now()
+              bd = Date.now()
             }
             if (this.controller.get().btn && !this.o) {
               k = texts[j].length;
@@ -770,15 +763,14 @@ var textCange = (text) => {
             resolve();
             clearInterval(m);
           }
-
           this.o = this.controller.get().btn;
         }, 1);
       });
     }
 
     async questionSpeech(answers = ["1st answer", "2nd answer", "3rd answer"],) {
+      await this.openSpeech()
       this.stopUpdate();
-      this.openSpeech()
       var serecting = 0
       var k = this.controller.get().y == 0
       var p = this.controller.get().btn
