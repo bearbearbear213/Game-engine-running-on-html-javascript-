@@ -20,6 +20,19 @@
     }
     return objects;
   };
+
+    var gameEngineMakeMap=(engine,mapTile,mapDict,size=10,objectName="object")=>{
+      for(n in mapTile){
+        for(m in mapTile[n]){
+          if(!(mapDict[mapTile[n][m]]=="air")){
+            engine.addSprite(`${objectName}${n}/${m}`,copy(mapDict[mapTile[n][m]]))
+            engine.seen.sprites[`${objectName}${n}/${m}`].x=n*size
+            engine.seen.sprites[`${objectName}${n}/${m}`].y=m*size
+            engine.seen.sprites[`${objectName}${n}/${m}`].width=engine.seen.sprites[`object${n}/${m}`].height=size
+          }
+        }
+      }
+    }
   function col(rect1, rect2) {
     //     { x: 左上のx座標, y: 左上のy座標, width: 幅, height: 高さ }
     return !(
@@ -623,5 +636,202 @@
         this.n++
       }
       this.restartUpdate()
+    }
+  }
+
+
+var textCange = (text) => {
+    return text.split("/")
+  }
+  class novelGame extends Game {
+    constructor(seen, fps, statrSeen) {
+      super(seen, fps, statrSeen);
+      this.speechColor = "rgb(0,0,0)";
+      this.speechOpening = false;
+      this.speechText = "";
+      this.speechCharacter = "";
+      this.more = ""
+    }
+    setSpeech() {
+      clearInterval(this.drawing);
+      this.drawing = setInterval(() => {
+        this.self = this.seen.background;
+        this.main.style.background = this.self.color;
+        this.inner = "";
+        try {
+          for (this.self of Object.values(this.sprites)) {
+            try {
+              if (
+                this.self.y - this.seen.camera.y > 0 &&
+                this.self.y - this.seen.camera.y < 100 &&
+                this.self.x - this.seen.camera.x > 0 &&
+                this.self.x - this.seen.camera.x < 160
+              ) {
+                this.inner += `<div style="overflow: hidden;position:absolute;
+            top:${this.self.y - this.seen.camera.y - this.self.height / 2}%;
+            left:${(this.self.x - this.seen.camera.x - this.self.width / 2) / 1.6}%;
+            width:${this.self.width / 1.6}%;
+            height:${this.self.height}%;${this.self.output_rect ? "background:rgb(255,255,255)" : ""}">${this.self.img}</div>`;
+              }
+            } catch (e) { }
+            this.n++;
+          }
+        } catch (e) { }
+        this.inner += `<speech style="
+            position:absolute;
+            top:65%;
+            left:10%;
+            height:30%;
+            width:80%;
+            background:rgb(255,255,255);
+            border-radius: 5vh;
+            border: 1vh solid rgb(0,0,0);
+            overflow: auto;
+            font-size:5vh;
+            color:${this.speechColor};
+            display:${this.speechOpening ? "block" : "none"}
+          "><p>
+            ${this.speechText}
+          </p></speech>
+          <div style="
+            position:absolute;
+            top:60%;
+            left:5%;
+            height:10%;
+            width:30%;
+            background:rgb(255,255,255);
+            border-radius: 5vh;
+            border: 1vh solid rgb(0,0,0);
+            overflow: auto;
+            font-size:7vh;
+            color:${this.speechColor};
+            display:${this.speechOpening ? "block" : "none"}
+          "><div>
+            ${this.speechCharacter}
+          </div></div>
+          <div style="font-size:10vh">${this.more}</div>`;
+        this.main.innerHTML = this.inner;
+      });
+    }
+    openSpeech() {
+      this.speechOpening = true;
+    }
+    closeSpeech() {
+      this.speechOpening = false;
+    }
+    changeSpeech(
+      character = "character",
+      text = "this is text",
+      color = "rgb(0,0,0)",
+    ) {
+      this.speechCharacter = character;
+      this.speechText = text;
+      this.speechColor = color;
+    }
+    async talkSpeech(
+      character = "character",
+      texts = ["this is text", "this is second text"],
+      color = "rgb(0,0,0)",
+      waitTime=100
+    ) {
+      this.openSpeech();
+      this.stopUpdate();
+      var l = "";
+      var k = 0;
+      var j = 0;
+      this.o = true;
+      var bd=Date.now()
+      await new Promise((resolve) => {
+        var sm = 0
+        var m = setInterval(() => {
+          sm++
+          this.stopUpdate()
+          if (texts[j].length == k) {
+            if (this.controller.get().btn && !this.o) {
+              l = "";
+              k = 0;
+              j++;
+            }
+          } else {
+            if ((bd+waitTime)<Date.now()) {
+              l += texts[j][k];
+              k++;
+              bd=Date.now()
+            }
+            if (this.controller.get().btn && !this.o) {
+              k = texts[j].length;
+              l = texts[j];
+            }
+            this.changeSpeech(character, l, color);
+          }
+          if (texts.length == j) {
+            this.restartUpdate();
+            this.closeSpeech();
+            resolve();
+            clearInterval(m);
+          }
+
+          this.o = this.controller.get().btn;
+        }, 1);
+      });
+    }
+
+    async questionSpeech(answers = ["1st answer", "2nd answer", "3rd answer"],) {
+      this.stopUpdate();
+      this.openSpeech()
+      var serecting = 0
+      var k = this.controller.get().y == 0
+      var p = this.controller.get().btn
+      await new Promise((resolve) => {
+        var o = setInterval(() => {
+          this.stopUpdate()
+          if (this.controller.get().btn && !p) {
+            this.restartUpdate();
+            this.closeSpeech();
+            resolve();
+            clearInterval(o);
+          }
+          p = this.controller.get().btn
+          var m = 0
+          this.more = `<div style="background:rgba(0,0,0,0.5);position:absolute;left:0%;top:0%;width:100%;height:100%;"></div>`
+          for (var n of answers) {
+            this.more += `<div style="
+            position:absolute;
+            background:rgb(255,255,255);
+            border-radius: 5vh;
+            border: 1vh solid rgb(0,0,0);
+            overflow: auto;
+            font-size:7vh;
+            height:14vh;
+            width:95%;
+            color:rgb(0,0,0);
+          "><div><b>`
+            if (m == serecting) {
+              this.more += "・"
+            } else {
+              this.more += "　"
+            }
+            this.more += `${m + 1},</b>${n}</div></div>`
+            this.more +=
+              m++
+            this.more += "<br/>"
+          }
+          if ((!this.controller.get().y == 0) && k) {
+            if (this.controller.get().y < 0) {
+              serecting--
+            } else {
+              serecting++
+            }
+            if (serecting == answers.length) {
+              serecting = 0
+            } else if (serecting == -1) {
+              serecting = answers.length - 1
+            }
+          }
+          k = this.controller.get().y == 0
+        })
+      })
+      this.more = ""
+      return serecting
     }
   }
