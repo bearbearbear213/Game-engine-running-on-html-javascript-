@@ -633,7 +633,7 @@
   }
 
 
-  var textCange = (text) => {
+  var textChange = (text) => {
     return text.split("/")
   }
   class novelGame extends Game {
