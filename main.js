@@ -1,5 +1,4 @@
-
-  var copy = _.cloneDeep
+　var copy = _.cloneDeep
   var make_angle = (angle, speed = 10) => {
     const x = speed * Math.cos(angle)
     const y = speed * Math.sin(angle)
@@ -538,10 +537,10 @@
         },
         sprites: {}
       }
-    }, fps = 60, startSeen = "main",useController=true) {
+    }, fps = 60, startSeen = "main", useController = true) {
       console.log('gameEngineLoaded!');
       document.body.innerHTML += `<game_canvas style="overflow: hidden;background:rgb(0, 0, 0);width:160vh;height:100vh;position:absolute;top: 0px;left: 0px;"></game_canvas>`
-      if(useController){this.controller = new controller()}
+      if (useController) { this.controller = new controller() }
       this.main = taglist("game_canvas")[0];
       this.seenName = startSeen;
       this.seens = seen;
@@ -568,21 +567,21 @@
           this.main.innerHTML = this.inner
         } catch (e) { }
       })
-    this.basemouse={x:0,y:0,width:1,height:1}
-    this.mouse={x:0,y:0,width:1,height:1,click:false}
-    this.mouseposition=(e)=>{
-      this.basemouse.x=((e.clientX/this.main.getBoundingClientRect().width)*1.6)
-      this.basemouse.y=(e.clientY/this.main.getBoundingClientRect().height)
-    }
-    setInterval(()=>{
-      this.mouse.x=(this.basemouse.x*100)+this.seen.camera.x
-      this.mouse.y=(this.basemouse.y*100)+this.seen.camera.y
-    })
-    this.main.addEventListener("pointermove",this.mouseposition)
-    this.main.addEventListener("pointerdown",this.mouseposition)
-    this.main.addEventListener("pointerdown",()=>{this.mouse.click=true})
-    this.main.addEventListener("pointerup",()=>{this.mouse.click=false})
-    this.main.addEventListener("pointerleave",()=>{this.mouse.click=false})
+      this.basemouse = { x: 0, y: 0, width: 1, height: 1 }
+      this.mouse = { x: 0, y: 0, width: 1, height: 1, click: false }
+      this.mouseposition = (e) => {
+        this.basemouse.x = ((e.clientX / this.main.getBoundingClientRect().width) * 1.6) * 100
+        this.basemouse.y = (e.clientY / this.main.getBoundingClientRect().height) * 100
+      }
+      setInterval(() => {
+        this.mouse.x = (this.basemouse.x) + this.seen.camera.x
+        this.mouse.y = (this.basemouse.y) + this.seen.camera.y
+      })
+      this.main.addEventListener("pointermove", this.mouseposition)
+      this.main.addEventListener("pointerdown", this.mouseposition)
+      this.main.addEventListener("pointerdown", () => { this.mouse.click = true })
+      this.main.addEventListener("pointerup", () => { this.mouse.click = false })
+      this.main.addEventListener("pointerleave", () => { this.mouse.click = false })
     }
     addSprite(name, sprite) {
       this.aS = this.self
@@ -728,8 +727,8 @@
       this.speechOpening = false;
     }
     changeSpeech(
-      character = "character",
-      text = "this is text",
+      character,
+      text,
       color = "rgb(0,0,0)",
     ) {
       this.speechCharacter = character;
@@ -742,12 +741,13 @@
       color = "rgb(0,0,0)",
       waitTime = 100
     ) {
+      this.changeSpeech()
       this.openSpeech();
       this.stopUpdate();
       var l = "";
       var k = 0;
       var j = 0;
-      this.o = this.controller.get().btn;
+      this.o = this.controller.get().btn || this.mouse.click
       var bd = Date.now()
       await new Promise((resolve) => {
         var sm = 0
@@ -755,7 +755,7 @@
           sm++
           this.stopUpdate()
           if (texts[j].length == k) {
-            if (this.controller.get().btn && !this.o) {
+            if ((this.controller.get().btn || this.mouse.click) && !this.o) {
               l = "";
               k = 0;
               j++;
@@ -766,35 +766,43 @@
               k++;
               bd = Date.now()
             }
-            if (this.controller.get().btn && !this.o) {
+            if ((this.controller.get().btn || this.mouse.click) && !this.o) {
               k = texts[j].length;
               l = texts[j];
             }
             this.changeSpeech(character, l, color);
           }
           if (texts.length == j) {
-            this.restartUpdate();
-            this.closeSpeech();
             resolve();
             clearInterval(m);
           }
-          this.o = this.controller.get().btn;
+          this.o = this.controller.get().btn || this.mouse.click
         }, 1);
       });
+
+      await new Promise((resolve) => {
+        var o = setInterval(() => {
+          this.stopUpdate()
+          if (!(this.controller.get().btn || this.mouse.click)) {
+            this.restartUpdate();
+            this.closeSpeech();
+            resolve();
+            clearInterval(o);
+          }
+        })
+      })
     }
 
     async questionSpeech(answers = ["1st answer", "2nd answer", "3rd answer"],) {
-      await this.openSpeech()
+      this.openSpeech()
       this.stopUpdate();
       var serecting = 0
       var k = this.controller.get().y == 0
-      var p = this.controller.get().btn
+      var p = this.controller.get().btn || this.mouse.click
       await new Promise((resolve) => {
         var o = setInterval(() => {
           this.stopUpdate()
           if (this.controller.get().btn && !p) {
-            this.restartUpdate();
-            this.closeSpeech();
             resolve();
             clearInterval(o);
           }
@@ -809,18 +817,22 @@
             border: 1vh solid rgb(0,0,0);
             overflow: auto;
             font-size:7vh;
-            height:14vh;
-            width:95%;
+            height:14%;
+            width:98%;
             color:rgb(0,0,0);
           "><div><b>`
-            if (m == serecting) {
+            if (m == serecting || m == Math.trunc(this.basemouse.y / 14)) {
               this.more += "・"
+              if (this.mouse.click && !p && m == Math.trunc(this.basemouse.y / 14)) {
+                serecting = m
+                resolve();
+                clearInterval(o);
+              }
             } else {
               this.more += "　"
             }
             this.more += `${m + 1},</b>${n}</div></div>`
-            this.more +=
-              m++
+            m++
             this.more += "<br/>"
           }
           if ((!this.controller.get().y == 0) && k) {
@@ -839,6 +851,17 @@
         })
       })
       this.more = ""
+      await new Promise((resolve) => {
+        var o = setInterval(() => {
+          this.stopUpdate()
+          if (!(this.controller.get().btn || this.mouse.click)) {
+            this.restartUpdate();
+            this.closeSpeech();
+            resolve();
+            clearInterval(o);
+          }
+        })
+      })
       return serecting
     }
   }
