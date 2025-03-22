@@ -568,6 +568,18 @@
           this.main.innerHTML = this.inner
         } catch (e) { }
       })
+    this.basemouse={x:0,y:0,width:1,height:1}
+    this.mouse={x:0,y:0,width:1,height:1}
+    this.mouseposition=(e)=>{
+      this.basemouse.x=((e.clientX/this.main.getBoundingClientRect().width)*1.6)
+      this.basemouse.y=(e.clientY/this.main.getBoundingClientRect().height)
+    }
+    setInterval(()=>{
+      this.mouse.x=(this.basemouse.x*100)+this.seen.camera.x
+      this.mouse.y=(this.basemouse.y*100)+this.seen.camera.y
+    })
+    this.main.addEventListener("pointermove",this.mouseposition)
+    this.main.addEventListener("pointerdown",this.mouseposition)
     }
     addSprite(name, sprite) {
       this.aS = this.self
