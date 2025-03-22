@@ -538,10 +538,10 @@
         },
         sprites: {}
       }
-    }, fps = 60, startSeen = "main") {
+    }, fps = 60, startSeen = "main",useController=true) {
       console.log('gameEngineLoaded!');
       document.body.innerHTML += `<game_canvas style="overflow: hidden;background:rgb(0, 0, 0);width:160vh;height:100vh;position:absolute;top: 0px;left: 0px;"></game_canvas>`
-      this.controller = new controller()
+      if(useController){this.controller = new controller()}
       this.main = taglist("game_canvas")[0];
       this.seenName = startSeen;
       this.seens = seen;
