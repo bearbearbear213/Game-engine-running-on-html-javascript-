@@ -569,7 +569,7 @@
         } catch (e) { }
       })
     this.basemouse={x:0,y:0,width:1,height:1}
-    this.mouse={x:0,y:0,width:1,height:1}
+    this.mouse={x:0,y:0,width:1,height:1,click:false}
     this.mouseposition=(e)=>{
       this.basemouse.x=((e.clientX/this.main.getBoundingClientRect().width)*1.6)
       this.basemouse.y=(e.clientY/this.main.getBoundingClientRect().height)
@@ -580,6 +580,9 @@
     })
     this.main.addEventListener("pointermove",this.mouseposition)
     this.main.addEventListener("pointerdown",this.mouseposition)
+    this.main.addEventListener("pointerdown",()=>{this.mouse.click=true})
+    this.main.addEventListener("pointerup",()=>{this.mouse.click=false})
+    this.main.addEventListener("pointerleave",()=>{this.mouse.click=false})
     }
     addSprite(name, sprite) {
       this.aS = this.self
