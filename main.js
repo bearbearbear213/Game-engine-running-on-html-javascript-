@@ -582,6 +582,24 @@
       this.main.addEventListener("pointerdown", () => { this.mouse.click = true })
       this.main.addEventListener("pointerup", () => { this.mouse.click = false })
       this.main.addEventListener("pointerleave", () => { this.mouse.click = false })
+    this.keyboard={}
+    this.keycodes={}
+    for(n of `QAZWSXEDCRFVTGBYHNUJMIKOLP`.split("")){
+      this.keycodes[`Key${n}`]=n
+    }
+    for(n of Object.values(this.keycodes)){
+      this.keyboard[n]=false
+    }
+    document.addEventListener("keydown",(e)=>{
+      if(Object.keys(this.keycodes).includes(e.code)){
+        this.keyboard[Object.keys(this.keyboard)[Object.keys(this.keycodes).indexOf(e.code)]]=true
+      }
+    })
+    document.addEventListener("keyup",(e)=>{
+      if(Object.keys(this.keycodes).includes(e.code)){
+        this.keyboard[Object.keys(this.keyboard)[Object.keys(this.keycodes).indexOf(e.code)]]=false
+      }
+    })
     }
     addSprite(name, sprite) {
       this.aS = this.self
