@@ -691,6 +691,7 @@
       this.more = ""
     }
     setSpeech() {
+      this.changeSpeech("","","")
       clearInterval(this.drawing);
       this.drawing = setInterval(() => {
         this.self = this.seen.background;
@@ -772,7 +773,6 @@
       color = "rgb(0,0,0)",
       waitTime = 100
     ) {
-      this.changeSpeech("","","")
       this.openSpeech();
       this.stopUpdate();
       var l = "";
