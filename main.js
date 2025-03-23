@@ -772,7 +772,7 @@
       color = "rgb(0,0,0)",
       waitTime = 100
     ) {
-      this.changeSpeech()
+      this.changeSpeech("","","")
       this.openSpeech();
       this.stopUpdate();
       var l = "";
