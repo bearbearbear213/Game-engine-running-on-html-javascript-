@@ -1,4 +1,5 @@
-　var copy = _.cloneDeep
+
+  var copy = _.cloneDeep
   var make_angle = (angle, speed = 10) => {
     const x = speed * Math.cos(angle)
     const y = speed * Math.sin(angle)
@@ -526,6 +527,35 @@
       return `x:${this.get().x},y:${this.get().y},btn:${this.btn},fps:${this.fps}`;
     }
   }
+  class keyboard {
+    constructor() {
+      this.keyboard = {}
+      this.keycodes = {}
+      var n
+      for (n of `QAZWSXEDCRFVTGBYHNUJMIKOLP`.split("")) {
+        this.keycodes[`Key${n}`] = n
+      }
+      for (n of `Up/Down/Left/Right`.split("/")) {
+        this.keycodes[`Arrow${n}`] = n
+      }
+      for (n of Object.values(this.keycodes)) {
+        this.keyboard[n] = false
+      }
+      document.addEventListener("keydown", (e) => {
+        if (Object.keys(this.keycodes).includes(e.code)) {
+          this.keyboard[Object.keys(this.keyboard)[Object.keys(this.keycodes).indexOf(e.code)]] = true
+        }
+      })
+      document.addEventListener("keyup", (e) => {
+        if (Object.keys(this.keycodes).includes(e.code)) {
+          this.keyboard[Object.keys(this.keyboard)[Object.keys(this.keycodes).indexOf(e.code)]] = false
+        }
+      })
+    }
+    input() {
+      return this.keyboard
+    }
+  }
   class Game {
     constructor(seen = {
       main: {
@@ -539,6 +569,7 @@
       }
     }, fps = 60, startSeen = "main", useController = true) {
       console.log('gameEngineLoaded!');
+      this.keyboard = new keyboard()
       document.body.innerHTML += `<game_canvas style="overflow: hidden;background:rgb(0, 0, 0);width:160vh;height:100vh;position:absolute;top: 0px;left: 0px;"></game_canvas>`
       if (useController) { this.controller = new controller() }
       this.main = taglist("game_canvas")[0];
@@ -582,24 +613,6 @@
       this.main.addEventListener("pointerdown", () => { this.mouse.click = true })
       this.main.addEventListener("pointerup", () => { this.mouse.click = false })
       this.main.addEventListener("pointerleave", () => { this.mouse.click = false })
-    this.keyboard={}
-    this.keycodes={}
-    for(n of `QAZWSXEDCRFVTGBYHNUJMIKOLP`.split("")){
-      this.keycodes[`Key${n}`]=n
-    }
-    for(n of Object.values(this.keycodes)){
-      this.keyboard[n]=false
-    }
-    document.addEventListener("keydown",(e)=>{
-      if(Object.keys(this.keycodes).includes(e.code)){
-        this.keyboard[Object.keys(this.keyboard)[Object.keys(this.keycodes).indexOf(e.code)]]=true
-      }
-    })
-    document.addEventListener("keyup",(e)=>{
-      if(Object.keys(this.keycodes).includes(e.code)){
-        this.keyboard[Object.keys(this.keyboard)[Object.keys(this.keycodes).indexOf(e.code)]]=false
-      }
-    })
     }
     addSprite(name, sprite) {
       this.aS = this.self
@@ -883,3 +896,4 @@
       return serecting
     }
   }
+
