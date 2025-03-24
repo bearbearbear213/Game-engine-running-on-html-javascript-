@@ -585,7 +585,7 @@
         try {
           for (this.self of Object.values(this.sprites)) {
             try {
-              if (this.self.y - this.seen.camera.y > 0 && this.self.y - this.seen.camera.y < 100 && this.self.x - this.seen.camera.x > 0 && this.self.x - this.seen.camera.x < 160) {
+              if (col(this.self,{width:160,height:100,x:this.seen.camera.x+80,y:this.seen.camera.y+50}) {
                 this.inner += `<div style="position:absolute;
           top:${(this.self.y - this.seen.camera.y - (this.self.height / 2))}%;
           left:${(this.self.x - this.seen.camera.x - (this.self.width / 2)) / 1.6}%;
