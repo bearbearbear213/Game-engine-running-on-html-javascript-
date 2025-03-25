@@ -603,11 +603,9 @@
       this.mouseposition = (e) => {
         this.basemouse.x = ((e.clientX / this.main.getBoundingClientRect().width) * 1.6) * 100
         this.basemouse.y = (e.clientY / this.main.getBoundingClientRect().height) * 100
-      }
-      setInterval(() => {
         this.mouse.x = (this.basemouse.x) + this.seen.camera.x
         this.mouse.y = (this.basemouse.y) + this.seen.camera.y
-      })
+      }
       this.main.addEventListener("pointermove", this.mouseposition)
       this.main.addEventListener("pointerdown", this.mouseposition)
       this.main.addEventListener("pointerdown", () => { this.mouse.click = true })
