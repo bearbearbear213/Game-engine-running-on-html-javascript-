@@ -539,7 +539,7 @@
         this.keycodes[`Arrow${n}`] = n
       }
       for (n of `Space/Enter`.split("/")) {
-        this.keycodes[`{n}`] = n
+        this.keycodes[`${n}`] = n
       }
       for (n of Object.values(this.keycodes)) {
         this.keyboard[n] = false
