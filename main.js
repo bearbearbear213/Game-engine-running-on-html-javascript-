@@ -530,7 +530,7 @@
   class keyboard {
     constructor() {
       this.keyboard = {}
-      this.keycodes = {ShiftLeft:"Shift",ShiftRight:"Shift"}
+      this.keycodes = {}
       var n
       for (n of `QAZWSXEDCRFVTGBYHNUJMIKOLP`.split("")) {
         this.keycodes[`Key${n}`] = n
