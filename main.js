@@ -683,8 +683,8 @@
     return text.split("/")
   }
   class novelGame extends Game {
-    constructor(seen, fps, statrSeen) {
-      super(seen, fps, statrSeen,true);
+    constructor(seen, fps, statrSeen,useController=true) {
+      super(seen, fps, statrSeen,useController);
       this.speechColor = "rgb(0,0,0)";
       this.speechOpening = false;
       this.speechText = "";
