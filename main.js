@@ -683,8 +683,8 @@
     return text.split("/")
   }
   class novelGame extends Game {
-    constructor(seen, fps, statrSeen,useController) {
-      super(seen, fps, statrSeen,useController);
+    constructor(seen, fps, statrSeen) {
+      super(seen, fps, statrSeen,true);
       this.speechColor = "rgb(0,0,0)";
       this.speechOpening = false;
       this.speechText = "";
@@ -892,4 +892,118 @@
       return serecting
     }
   }
+  class novelGameToTouch extends novelGame {
+    constructor(seen, fps, statrSeen) {
+      super(seen, fps, statrSeen, false);
 
+      this.talkSpeech = async (
+        character = "character",
+        texts = ["this is text", "this is second text"],
+        color = "rgb(0,0,0)",
+        waitTime = 100
+      ) => {
+        this.openSpeech();
+        this.stopUpdate();
+        var l = "";
+        var k = 0;
+        var j = 0;
+        this.o = this.mouse.click
+        var bd = Date.now()
+        await new Promise((resolve) => {
+          var sm = 0
+          var m = setInterval(() => {
+            sm++
+            this.stopUpdate()
+            if (texts[j].length == k) {
+              if ((this.mouse.click) && !this.o) {
+                l = "";
+                k = 0;
+                j++;
+              }
+            } else {
+              if ((bd + waitTime) < Date.now()) {
+                l += texts[j][k];
+                k++;
+                bd = Date.now()
+              }
+              if ((this.mouse.click) && !this.o) {
+                k = texts[j].length;
+                l = texts[j];
+              }
+              this.changeSpeech(character, l, color);
+            }
+            if (texts.length == j) {
+              resolve();
+              clearInterval(m);
+            }
+            this.o = this.mouse.click
+          }, 1);
+        });
+
+        await new Promise((resolve) => {
+          var o = setInterval(() => {
+            this.stopUpdate()
+            if (!(this.mouse.click)) {
+              this.restartUpdate();
+              this.closeSpeech();
+              resolve();
+              clearInterval(o);
+            }
+          })
+        })
+      }
+
+      this.questionSpeech = async (answers = ["1st answer", "2nd answer", "3rd answer"],) => {
+        this.openSpeech()
+        this.stopUpdate();
+        var serecting = 0
+        var p = this.mouse.click
+        await new Promise((resolve) => {
+          var o = setInterval(() => {
+            this.stopUpdate()
+            var m = 0
+            this.more = `<div style="background:rgba(0,0,0,0.5);position:absolute;left:0%;top:0%;width:100%;height:100%;"></div>`
+            for (var n of answers) {
+              this.more += `<div style="
+            position:absolute;
+            background:rgb(255,255,255);
+            border-radius: 5vh;
+            border: 1vh solid rgb(0,0,0);
+            overflow: auto;
+            font-size:7vh;
+            height:14%;
+            width:98%;
+            color:rgb(0,0,0);
+          "><div><b>`
+              if (m == Math.trunc(this.basemouse.y / 14)) {
+                this.more += "・"
+                if (this.mouse.click && !p && m == Math.trunc(this.basemouse.y / 14)) {
+                  serecting = m
+                  resolve();
+                  clearInterval(o);
+                }
+              } else {
+                this.more += "　"
+              }
+              this.more += `${m + 1},</b>${n}</div></div>`
+              m++
+              this.more += "<br/>"
+            }
+          })
+        })
+        this.more = ""
+        await new Promise((resolve) => {
+          var o = setInterval(() => {
+            this.stopUpdate()
+            if (!( this.mouse.click)) {
+              this.restartUpdate();
+              this.closeSpeech();
+              resolve();
+              clearInterval(o);
+            }
+          })
+        })
+        return serecting
+      }
+    }
+  }
