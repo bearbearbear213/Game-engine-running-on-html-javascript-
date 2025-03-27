@@ -1,4 +1,3 @@
-
   var copy = _.cloneDeep
   var make_angle = (angle, speed = 10) => {
     const x = speed * Math.cos(angle)
@@ -588,7 +587,7 @@
         try {
           for (this.self of Object.values(this.sprites)) {
             try {
-              if (col(this.self,{width:160,height:100,x:this.seen.camera.x+80,y:this.seen.camera.y+50})) {
+              if (col(this.self, { width: 160, height: 100, x: this.seen.camera.x + 80, y: this.seen.camera.y + 50 })) {
                 this.inner += `<div style="position:absolute;
           top:${(this.self.y - this.seen.camera.y - (this.self.height / 2))}%;
           left:${(this.self.x - this.seen.camera.x - (this.self.width / 2)) / 1.6}%;
@@ -683,16 +682,28 @@
     return text.split("/")
   }
   class novelGame extends Game {
-    constructor(seen, fps, statrSeen,useController=true) {
-      super(seen, fps, statrSeen,useController);
+    constructor(seen, fps, statrSeen, useController = true) {
+      super(seen, fps, statrSeen, useController);
       this.speechColor = "rgb(0,0,0)";
       this.speechOpening = false;
       this.speechText = "";
       this.speechCharacter = "";
       this.more = ""
     }
+    setCharacters(characters = {}) {
+      this.charactersData = characters
+    }
+    drawCharacters(left, right = "", light = 1,lx=0,ry=0) {
+      /*imagesize=1:1*/
+      this.moremore = ""
+      this.moremore += `<img src="${this.charactersData[left]}" width="1000"height="1000"style="position:absolute;${!light == 1 ? "filter: grayscale(80%);top:-15%;" : "top:-25%;"}left:${lx-50}%;"></img>`
+      this.moremore += `<img src="${this.charactersData[right]}" width="1000"height="1000"style="position:absolute;${!light == 1 ? "top:-25%;" : "filter: grayscale(80%);top:-15%;"}right:${ry-50}%;"></img>`
+    }
+    stopDrawCharacters() {
+      this.moremore = ""
+    }
     setSpeech() {
-      this.changeSpeech("","","")
+      this.changeSpeech("", "", "")
       clearInterval(this.drawing);
       this.drawing = setInterval(() => {
         this.self = this.seen.background;
@@ -701,7 +712,7 @@
         try {
           for (this.self of Object.values(this.sprites)) {
             try {
-              if (col(this.self,{width:160,height:100,x:this.seen.camera.x+80,y:this.seen.camera.y+50})) {
+              if (col(this.self, { width: 160, height: 100, x: this.seen.camera.x + 80, y: this.seen.camera.y + 50 })) {
                 this.inner += `<div style="overflow: hidden;position:absolute;
             top:${this.self.y - this.seen.camera.y - this.self.height / 2}%;
             left:${(this.self.x - this.seen.camera.x - this.self.width / 2) / 1.6}%;
@@ -712,7 +723,9 @@
             this.n++;
           }
         } catch (e) { }
-        this.inner += `<speech style="
+        this.inner += `
+          ${this.moremore}
+          <speech style="
             position:absolute;
             top:65%;
             left:10%;
@@ -747,6 +760,7 @@
           <div style="font-size:10vh">${this.more}</div>`;
         this.main.innerHTML = this.inner;
       });
+      this.moremore = ""
     }
     openSpeech() {
       this.speechOpening = true;
@@ -995,7 +1009,7 @@
         await new Promise((resolve) => {
           var o = setInterval(() => {
             this.stopUpdate()
-            if (!( this.mouse.click)) {
+            if (!(this.mouse.click)) {
               this.restartUpdate();
               this.closeSpeech();
               resolve();
