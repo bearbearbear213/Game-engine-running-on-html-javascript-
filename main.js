@@ -861,7 +861,7 @@
             height:14%;
             width:98%;
             color:rgb(0,0,0);
-          "><div><b>`
+          "><div>`
             if (m == serecting || m == Math.trunc(this.basemouse.y / 14)) {
               this.more += "・"
               if (this.mouse.click && !p && m == Math.trunc(this.basemouse.y / 14)) {
@@ -872,7 +872,7 @@
             } else {
               this.more += "　"
             }
-            this.more += `${m + 1},</b>${n}</div></div>`
+            this.more += `${n}</div></div>`
             m++
             this.more += "<br/>"
           }
@@ -988,7 +988,7 @@
             height:14%;
             width:98%;
             color:rgb(0,0,0);
-          "><div><b>`
+          "><div>`
               if (m == Math.trunc(this.basemouse.y / 14)) {
                 this.more += "・"
                 if (this.mouse.click && !p && m == Math.trunc(this.basemouse.y / 14)) {
@@ -999,7 +999,7 @@
               } else {
                 this.more += "　"
               }
-              this.more += `${m + 1},</b>${n}</div></div>`
+              this.more += `${n}</div></div>`
               m++
               this.more += "<br/>"
             }
