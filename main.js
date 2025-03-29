@@ -732,7 +732,7 @@
             left:10%;
             height:30%;
             width:80%;
-            background:rgb(255,255,255);
+            background:rgba(255,255,255,0.7);
             border-radius: 5vh;
             border: 1vh solid rgb(0,0,0);
             overflow: auto;
@@ -748,7 +748,7 @@
             left:5%;
             height:10%;
             width:30%;
-            background:rgb(255,255,255);
+            background:rgba(255,255,255,0.7);
             border-radius: 5vh;
             border: 1vh solid rgb(0,0,0);
             overflow: auto;
