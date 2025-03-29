@@ -854,7 +854,7 @@
           for (var n of answers) {
             this.more += `<div style="
             position:absolute;
-            background:rgb(255,255,255);
+            background:rgba(255,255,255,0.7);
             border-radius: 5vh;
             border: 1vh solid rgb(0,0,0);
             overflow: auto;
@@ -981,7 +981,7 @@
             for (var n of answers) {
               this.more += `<div style="
             position:absolute;
-            background:rgb(255,255,255);
+            background:rgba(255,255,255,0.7);
             border-radius: 5vh;
             border: 1vh solid rgb(0,0,0);
             overflow: auto;
