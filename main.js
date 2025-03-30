@@ -578,7 +578,7 @@
       this.main = taglist("game_canvas")[0];
       this.seenName = startSeen;
       this.seens = seen;
-      this.fps = 1000 / fps
+      this.fps =fps
       this.update;
       this.updateFpsDate = Date.now()
       this.drawing = setInterval(() => {
@@ -644,7 +644,7 @@
     restartUpdate() {
       this.stopping = false
       this.update = setInterval(() => {
-        if ((Date.now() - this.updateFpsDate) > this.fps) {
+        if ((Date.now() - this.updateFpsDate) >  1000 / this.fps) {
           this.updateFpsDate = Date.now()
           this.self = this.seen.background
           try { this.self.update(this.self) } catch (e) { }
