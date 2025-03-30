@@ -588,7 +588,7 @@
         try {
           for (this.self of Object.values(this.sprites)) {
             try {
-              if (col(this.self, { width: 160, height: 100, x: this.seen.camera.x + 80, y: this.seen.camera.y + 50 })||(this.self.Mustdrawing==true) {
+              if (col(this.self, { width: 160, height: 100, x: this.seen.camera.x + 80, y: this.seen.camera.y + 50 })||(this.self.Mustdrawing==true)) {
                 this.inner += `<div style="position:absolute;
           top:${(this.self.y - this.seen.camera.y - (this.self.height / 2))}%;
           left:${(this.self.x - this.seen.camera.x - (this.self.width / 2)) / 1.6}%;
@@ -713,7 +713,7 @@
         try {
           for (this.self of Object.values(this.sprites)) {
             try {
-              if (col(this.self, { width: 160, height: 100, x: this.seen.camera.x + 80, y: this.seen.camera.y + 50 })) {
+              if (col(this.self, { width: 160, height: 100, x: this.seen.camera.x + 80, y: this.seen.camera.y + 50 })||(this.self.Mustdrawing==true)) {
                 this.inner += `<div style="overflow: hidden;position:absolute;
             top:${this.self.y - this.seen.camera.y - this.self.height / 2}%;
             left:${(this.self.x - this.seen.camera.x - this.self.width / 2) / 1.6}%;
