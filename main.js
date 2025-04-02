@@ -1097,6 +1097,7 @@
           })
         },
         update: (self) => {
+          game.seen.x=game.seen.y=0
         }
       }, camera: {
         x: 0,
