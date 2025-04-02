@@ -643,7 +643,7 @@
     }
     restartUpdate() {
       this.stopping = false
-      this.update = setInterval(() => {
+      this.update = setInterval(async() => {
         if ((Date.now() - this.updateFpsDate) >  1000 / this.fps) {
           this.updateFpsDate = Date.now()
           this.self = this.seen.background
