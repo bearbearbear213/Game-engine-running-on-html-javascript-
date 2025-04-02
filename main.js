@@ -1,4 +1,3 @@
-
   var copy = _.cloneDeep
   var make_angle = (angle, speed = 10) => {
     const x = speed * Math.cos(angle)
@@ -578,7 +577,7 @@
       this.main = taglist("game_canvas")[0];
       this.seenName = startSeen;
       this.seens = seen;
-      this.fps =fps
+      this.fps = fps
       this.update;
       this.updateFpsDate = Date.now()
       this.drawing = setInterval(() => {
@@ -588,7 +587,7 @@
         try {
           for (this.self of Object.values(this.sprites)) {
             try {
-              if (col(this.self, { width: 160, height: 100, x: this.seen.camera.x + 80, y: this.seen.camera.y + 50 })||(this.self.Mustdrawing==true)) {
+              if (col(this.self, { width: 160, height: 100, x: this.seen.camera.x + 80, y: this.seen.camera.y + 50 }) || (this.self.Mustdrawing == true)) {
                 this.inner += `<div style="position:absolute;
           top:${(this.self.y - this.seen.camera.y - (this.self.height / 2))}%;
           left:${(this.self.x - this.seen.camera.x - (this.self.width / 2)) / 1.6}%;
@@ -637,43 +636,49 @@
       }
       this.restartUpdate()
     }
-    stopUpdate() {
+    async stopUpdate() {
       clearInterval(this.update)
       this.stopping = true
+      await new Promise((resolve) => {
+        var n=setInterval(()=>{if(!this.playing){
+          clearInterval(n)
+          resolve()
+        }})
+      })
     }
     restartUpdate() {
       this.stopping = false
-      this.update = setInterval(async() => {
-        if ((Date.now() - this.updateFpsDate) >  1000 / this.fps) {
+      this.update = setInterval(async () => {
+        if ((Date.now() - this.updateFpsDate) > 1000 / this.fps && !this.stopping) {
+          this.playing = true
           this.updateFpsDate = Date.now()
           this.self = this.seen.background
-          try{
-              try { 
-                await this.self.update(this.self) 
-              } catch (e) {
-                this.self.update(this.self) 
-              }
+          try {
+            try {
+              await this.self.update(this.self)
+            } catch (e) {
+              this.self.update(this.self)
+            }
           } catch (e) { }
           this.n = 0
           for (this.self of Object.values(this.sprites)) {
             if (this.stopping) { break }
-            this.playing = true
             this.self.name = Object.keys(this.sprites)[this.n]
-            try{
-              try { 
-                await this.self.update(this.self) 
+            try {
+              try {
+                await this.self.update(this.self)
               } catch (e) {
-                this.self.update(this.self) 
+                this.self.update(this.self)
               }
             } catch (e) { }
             this.n++
-            this.playing = false
           }
+          this.playing = false
         }
       })
     }
-    changeSeen(to) {
-      this.stopUpdate()
+    async changeSeen(to) {
+      await this.stopUpdate()
       this.seenName = to
       this.seen = this.seens[this.seenName]
       this.sprites = this.seen.sprites
@@ -724,7 +729,7 @@
         try {
           for (this.self of Object.values(this.sprites)) {
             try {
-              if (col(this.self, { width: 160, height: 100, x: this.seen.camera.x + 80, y: this.seen.camera.y + 50 })||(this.self.Mustdrawing==true)) {
+              if (col(this.self, { width: 160, height: 100, x: this.seen.camera.x + 80, y: this.seen.camera.y + 50 }) || (this.self.Mustdrawing == true)) {
                 this.inner += `<div style="overflow: hidden;position:absolute;
             top:${this.self.y - this.seen.camera.y - this.self.height / 2}%;
             left:${(this.self.x - this.seen.camera.x - this.self.width / 2) / 1.6}%;
@@ -1097,7 +1102,6 @@
           })
         },
         update: (self) => {
-          game.seen.x=game.seen.y=0
         }
       }, camera: {
         x: 0,
