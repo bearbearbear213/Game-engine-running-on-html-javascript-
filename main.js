@@ -654,9 +654,9 @@
                 this.self.update(this.self) 
               }
           } catch (e) { }
-          if (this.stopping) { return }
           this.n = 0
           for (this.self of Object.values(this.sprites)) {
+            if (this.stopping) { break }
             this.playing = true
             this.self.name = Object.keys(this.sprites)[this.n]
             try{
@@ -666,7 +666,6 @@
                 this.self.update(this.self) 
               }
             } catch (e) { }
-            if (this.stopping) { return }
             this.n++
             this.playing = false
           }
