@@ -647,13 +647,25 @@
         if ((Date.now() - this.updateFpsDate) >  1000 / this.fps) {
           this.updateFpsDate = Date.now()
           this.self = this.seen.background
-          try { this.self.update(this.self) } catch (e) { }
+          try{
+              try { 
+                await this.self.update(this.self) 
+              } catch (e) {
+                this.self.update(this.self) 
+              }
+          } catch (e) { }
           if (this.stopping) { return }
           this.n = 0
           for (this.self of Object.values(this.sprites)) {
             this.playing = true
             this.self.name = Object.keys(this.sprites)[this.n]
-            try { this.self.update(this.self) } catch (e) { }
+            try{
+              try { 
+                await this.self.update(this.self) 
+              } catch (e) {
+                this.self.update(this.self) 
+              }
+            } catch (e) { }
             if (this.stopping) { return }
             this.n++
             this.playing = false
