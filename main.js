@@ -1,4 +1,4 @@
-  var copy = _.cloneDeep
+    var copy = _.cloneDeep
   var make_angle = (angle, speed = 10) => {
     const x = speed * Math.cos(angle)
     const y = speed * Math.sin(angle)
@@ -646,6 +646,7 @@
         }
         this.self = this.seen.background
         this.inner = ""
+        this.inner+=`<style>@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');</style><div style="font-family :'DotGothic16', sans-serif;">`
         this.inner += `<div style="position:absolute;top:0%;left:0%;width:100%;height:100%;background:${this.self.color}"></div>`
         try {
           for (this.self of Object.values(this.sprites)) {
@@ -660,8 +661,9 @@
             } catch (e) { }
             this.n++
           }
-        } catch (e) { ok(e) }
-        const data = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0, 0, ${1600}, ${1000}' width='${1600}' height='${1000}'><foreignObject width='100%' height='100%'>${(new XMLSerializer).serializeToString(new DOMParser().parseFromString(this.inner, "text/html"))}</foreignObject></svg>`;
+        } catch (e) { }
+        this.inner+=`</div>`
+        const data = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0, 0, ${1600}, ${1000}' width='${1600}' height='${1000}'><foreignObject width='100%' height='100%'><div xmlns="http://www.w3.org/1999/xhtml">${(new XMLSerializer).serializeToString(new DOMParser().parseFromString(this.inner, "text/html"))}</div></foreignObject></svg>`;
 
         const svg = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
 
@@ -781,7 +783,7 @@
             } catch (e) { }
             this.n++
           }
-        } catch (e) { ok(e) }
+        } catch (e) { }
         
         this.inner += `
           ${this.moremore}
