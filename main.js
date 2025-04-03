@@ -572,34 +572,17 @@
     }, fps = 60, startSeen = "main", useController = true) {
       console.log('gameEngineLoaded!');
       this.keyboard = new keyboard()
-      document.body.innerHTML += `<game_canvas style="overflow: hidden;background:rgb(0, 0, 0);width:160vh;height:100vh;position:absolute;top: 0px;left: 0px;"></game_canvas>`
+      document.body.innerHTML += `<canvas width="1600"height="1000"style="overflow: hidden;background:rgb(0, 0, 0);width:160vh;height:100vh;position:absolute;top: 0px;left: 0px;"></canvas>`
       if (useController) { this.controller = new controller() }
-      this.main = taglist("game_canvas")[0];
+      this.main = taglist("canvas")[0];
+      this.ctx = this.main.getContext('2d');
+      this.test = taglist("test")[0]
       this.seenName = startSeen;
       this.seens = seen;
       this.fps = fps
       this.update;
-      this.updateFpsDate = Date.now()
-      this.drawing = setInterval(() => {
-        this.self = this.seen.background
-        this.main.style.background = this.self.color
-        this.inner = ""
-        try {
-          for (this.self of Object.values(this.sprites)) {
-            try {
-              if (col(this.self, { width: 160, height: 100, x: this.seen.camera.x + 80, y: this.seen.camera.y + 50 }) || (this.self.Mustdrawing == true)) {
-                this.inner += `<div style="position:absolute;
-          top:${(this.self.y - this.seen.camera.y - (this.self.height / 2))}%;
-          left:${(this.self.x - this.seen.camera.x - (this.self.width / 2)) / 1.6}%;
-          width:${this.self.width / 1.6}%;
-          height:${this.self.height}%;${this.self.output_rect ? "background:rgb(255,255,255)" : ""}">${this.self.img}</div>`
-              }
-            } catch (e) { }
-            this.n++
-          }
-          this.main.innerHTML = this.inner
-        } catch (e) { }
-      })
+      this.drawingMain = setInterval(() => {
+      }, 1000 / this.fps)
       this.basemouse = { x: 0, y: 0, width: 1, height: 1 }
       this.mouse = { x: 0, y: 0, width: 1, height: 1, click: false }
       this.mouseposition = (e) => {
@@ -635,23 +618,9 @@
         this.n++
       }
       this.restartUpdate()
-    }
-    async stopUpdate() {
-      clearInterval(this.update)
-      this.stopping = true
-      await new Promise((resolve) => {
-        var n=setInterval(()=>{if(!this.playing){
-          clearInterval(n)
-          resolve()
-        }})
-      })
-    }
-    restartUpdate() {
-      this.stopping = false
       this.update = setInterval(async () => {
-        if ((Date.now() - this.updateFpsDate) > 1000 / this.fps && !this.stopping) {
+        if (!this.stopping) {
           this.playing = true
-          this.updateFpsDate = Date.now()
           this.self = this.seen.background
           try {
             try {
@@ -675,7 +644,55 @@
           }
           this.playing = false
         }
+        this.self = this.seen.background
+        this.inner = ""
+        this.inner += `<div style="position:absolute;top:0%;left:0%;width:100%;height:100%;background:${this.self.color}"></div>`
+        try {
+          for (this.self of Object.values(this.sprites)) {
+            try {
+              if (col(this.self, { width: 160, height: 100, x: this.seen.camera.x + 80, y: this.seen.camera.y + 50 }) || (this.self.Mustdrawing == true)) {
+                this.inner += `<div style="position:absolute;
+          top:${(this.self.y - this.seen.camera.y - (this.self.height / 2))}%;
+          left:${(this.self.x - this.seen.camera.x - (this.self.width / 2)) / 1.6}%;
+          width:${this.self.width / 1.6}%;
+          height:${this.self.height}%;${this.self.output_rect ? "background:rgb(255,255,255)" : ""}">${this.self.img}</div>`
+              }
+            } catch (e) { }
+            this.n++
+          }
+        } catch (e) { ok(e) }
+        const data = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0, 0, ${1600}, ${1000}' width='${1600}' height='${1000}'><foreignObject width='100%' height='100%'>${(new XMLSerializer).serializeToString(new DOMParser().parseFromString(this.inner, "text/html"))}</foreignObject></svg>`;
+
+        const svg = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
+
+        // svgを生成した後、それをimgで読みたいため、urlを生成する
+        const DOMURL = self.URL || self.webkitURL || self;
+        const url = DOMURL.createObjectURL(svg);
+
+        const img = new Image();
+        img.src = url;
+
+        // GO!!
+        img.onload = () => {
+          this.ctx.drawImage(img, 0, 0);
+          // urlを破棄する
+          DOMURL.revokeObjectURL(url);
+        }
+      }, 1000 / this.fps)
+    }
+    async stopUpdate() {
+      this.stopping = true
+      await new Promise((resolve) => {
+        var n = setInterval(() => {
+          if (!this.playing) {
+            clearInterval(n)
+            resolve()
+          }
+        })
       })
+    }
+    restartUpdate() {
+      this.stopping = false
     }
     async changeSeen(to) {
       await this.stopUpdate()
@@ -706,6 +723,7 @@
       this.speechText = "";
       this.speechCharacter = "";
       this.more = ""
+      this.moremore = ""
     }
     setCharacters(characters = {}) {
       this.charactersData = characters
@@ -721,25 +739,50 @@
     }
     setSpeech() {
       this.changeSpeech("", "", "")
-      clearInterval(this.drawing);
-      this.drawing = setInterval(() => {
-        this.self = this.seen.background;
-        this.main.style.background = this.self.color;
-        this.inner = "";
+      clearInterval(this.update);this.update = setInterval(async () => {
+        if (!this.stopping) {
+          this.playing = true
+          this.self = this.seen.background
+          try {
+            try {
+              await this.self.update(this.self)
+            } catch (e) {
+              this.self.update(this.self)
+            }
+          } catch (e) { }
+          this.n = 0
+          for (this.self of Object.values(this.sprites)) {
+            if (this.stopping) { break }
+            this.self.name = Object.keys(this.sprites)[this.n]
+            try {
+              try {
+                await this.self.update(this.self)
+              } catch (e) {
+                this.self.update(this.self)
+              }
+            } catch (e) { }
+            this.n++
+          }
+          this.playing = false
+        }
+        this.self = this.seen.background
+        this.inner = ""
+        this.inner += `<div style="position:absolute;top:0%;left:0%;width:100%;height:100%;background:${this.self.color}"></div>`
         try {
           for (this.self of Object.values(this.sprites)) {
             try {
               if (col(this.self, { width: 160, height: 100, x: this.seen.camera.x + 80, y: this.seen.camera.y + 50 }) || (this.self.Mustdrawing == true)) {
-                this.inner += `<div style="overflow: hidden;position:absolute;
-            top:${this.self.y - this.seen.camera.y - this.self.height / 2}%;
-            left:${(this.self.x - this.seen.camera.x - this.self.width / 2) / 1.6}%;
-            width:${this.self.width / 1.6}%;
-            height:${this.self.height}%;${this.self.output_rect ? "background:rgb(255,255,255)" : ""}">${this.self.img}</div>`;
+                this.inner += `<div style="position:absolute;
+          top:${(this.self.y - this.seen.camera.y - (this.self.height / 2))}%;
+          left:${(this.self.x - this.seen.camera.x - (this.self.width / 2)) / 1.6}%;
+          width:${this.self.width / 1.6}%;
+          height:${this.self.height}%;${this.self.output_rect ? "background:rgb(255,255,255)" : ""}">${this.self.img}</div>`
               }
             } catch (e) { }
-            this.n++;
+            this.n++
           }
-        } catch (e) { }
+        } catch (e) { ok(e) }
+        
         this.inner += `
           ${this.moremore}
           <speech style="
@@ -775,9 +818,24 @@
             ${this.speechCharacter}
           </div></div>
           <div style="font-size:10vh">${this.more}</div>`;
-        this.main.innerHTML = this.inner;
-      });
-      this.moremore = ""
+        const data = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0, 0, ${1600}, ${1000}' width='${1600}' height='${1000}'><foreignObject width='100%' height='100%'>${(new XMLSerializer).serializeToString(new DOMParser().parseFromString(this.inner, "text/html"))}</foreignObject></svg>`;
+
+        const svg = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
+
+        // svgを生成した後、それをimgで読みたいため、urlを生成する
+        const DOMURL = self.URL || self.webkitURL || self;
+        const url = DOMURL.createObjectURL(svg);
+
+        const img = new Image();
+        img.src = url;
+
+        // GO!!
+        img.onload = () => {
+          this.ctx.drawImage(img, 0, 0);
+          // urlを破棄する
+          DOMURL.revokeObjectURL(url);
+        }
+      }, 1000 / this.fps)
     }
     openSpeech() {
       this.speechOpening = true;
