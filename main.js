@@ -1,4 +1,17 @@
-    var copy = _.cloneDeep
+  function shuffle(array) {
+    array.sort(() => Math.random() - 0.5);
+  }
+  var shuffleDict = (dict) => {
+    var a = Object.keys(dict)
+    shuffle(a)
+    var b = {}
+    for (var n of a) {
+      b[n] = dict[n]
+    }
+    return b
+  }
+  var random = (max, min) => { return Math.floor(Math.random() * (max - min)) + min; }
+  var copy = _.cloneDeep
   var make_angle = (angle, speed = 10) => {
     const x = speed * Math.cos(angle)
     const y = speed * Math.sin(angle)
@@ -591,6 +604,7 @@
         this.mouse.x = (this.basemouse.x) + this.seen.camera.x
         this.mouse.y = (this.basemouse.y) + this.seen.camera.y
       }
+      this.another=()=>{}
       this.main.addEventListener("pointermove", this.mouseposition)
       this.main.addEventListener("pointerdown", this.mouseposition)
       this.main.addEventListener("pointerdown", () => { this.mouse.click = true })
@@ -646,7 +660,6 @@
         }
         this.self = this.seen.background
         this.inner = ""
-        this.inner+=`<style>@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');</style><div style="font-family :'DotGothic16', sans-serif;">`
         this.inner += `<div style="position:absolute;top:0%;left:0%;width:100%;height:100%;background:${this.self.color}"></div>`
         try {
           for (this.self of Object.values(this.sprites)) {
@@ -662,7 +675,7 @@
             this.n++
           }
         } catch (e) { }
-        this.inner+=`</div>`
+        this.another()
         const data = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0, 0, ${1600}, ${1000}' width='${1600}' height='${1000}'><foreignObject width='100%' height='100%'><div xmlns="http://www.w3.org/1999/xhtml">${(new XMLSerializer).serializeToString(new DOMParser().parseFromString(this.inner, "text/html"))}</div></foreignObject></svg>`;
 
         const svg = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
@@ -726,6 +739,11 @@
       this.speechCharacter = "";
       this.more = ""
       this.moremore = ""
+
+
+      this.changeSpeech("", "", "")
+      
+      this.another=()=>{this.inner += `${this.moremore}<speech style="  position:absolute;  top:65%;  left:10%;  height:30%;  width:80%;  background:rgba(255,255,255,0.7);  border-radius: 5vh;  border: 1vh solid rgb(0,0,0);  overflow: auto;  font-size:5vh;  color:${this.speechColor};  display:${this.speechOpening ? "block" : "none"}"><p>  ${this.speechText}</p></speech><div style="  position:absolute;  top:60%;  left:5%;  height:10%;  width:30%;  background:rgba(255,255,255,0.7);  border-radius: 5vh;  border: 1vh solid rgb(0,0,0);  overflow: auto;  font-size:7vh;  color:${this.speechColor};  display:${this.speechOpening ? "block" : "none"}"><div>  ${this.speechCharacter}</div></div><div style="font-size:10vh">${this.more}</div>`;}
     }
     setCharacters(characters = {}) {
       this.charactersData = characters
@@ -740,104 +758,6 @@
       this.moremore = ""
     }
     setSpeech() {
-      this.changeSpeech("", "", "")
-      clearInterval(this.update);this.update = setInterval(async () => {
-        if (!this.stopping) {
-          this.playing = true
-          this.self = this.seen.background
-          try {
-            try {
-              await this.self.update(this.self)
-            } catch (e) {
-              this.self.update(this.self)
-            }
-          } catch (e) { }
-          this.n = 0
-          for (this.self of Object.values(this.sprites)) {
-            if (this.stopping) { break }
-            this.self.name = Object.keys(this.sprites)[this.n]
-            try {
-              try {
-                await this.self.update(this.self)
-              } catch (e) {
-                this.self.update(this.self)
-              }
-            } catch (e) { }
-            this.n++
-          }
-          this.playing = false
-        }
-        this.self = this.seen.background
-        this.inner = ""
-        this.inner += `<div style="position:absolute;top:0%;left:0%;width:100%;height:100%;background:${this.self.color}"></div>`
-        try {
-          for (this.self of Object.values(this.sprites)) {
-            try {
-              if (col(this.self, { width: 160, height: 100, x: this.seen.camera.x + 80, y: this.seen.camera.y + 50 }) || (this.self.Mustdrawing == true)) {
-                this.inner += `<div style="position:absolute;
-          top:${(this.self.y - this.seen.camera.y - (this.self.height / 2))}%;
-          left:${(this.self.x - this.seen.camera.x - (this.self.width / 2)) / 1.6}%;
-          width:${this.self.width / 1.6}%;
-          height:${this.self.height}%;${this.self.output_rect ? "background:rgb(255,255,255)" : ""}">${this.self.img}</div>`
-              }
-            } catch (e) { }
-            this.n++
-          }
-        } catch (e) { }
-        
-        this.inner += `
-          ${this.moremore}
-          <speech style="
-            position:absolute;
-            top:65%;
-            left:10%;
-            height:30%;
-            width:80%;
-            background:rgba(255,255,255,0.7);
-            border-radius: 5vh;
-            border: 1vh solid rgb(0,0,0);
-            overflow: auto;
-            font-size:5vh;
-            color:${this.speechColor};
-            display:${this.speechOpening ? "block" : "none"}
-          "><p>
-            ${this.speechText}
-          </p></speech>
-          <div style="
-            position:absolute;
-            top:60%;
-            left:5%;
-            height:10%;
-            width:30%;
-            background:rgba(255,255,255,0.7);
-            border-radius: 5vh;
-            border: 1vh solid rgb(0,0,0);
-            overflow: auto;
-            font-size:7vh;
-            color:${this.speechColor};
-            display:${this.speechOpening ? "block" : "none"}
-          "><div>
-            ${this.speechCharacter}
-          </div></div>
-          <div style="font-size:10vh">${this.more}</div>`;
-        const data = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0, 0, ${1600}, ${1000}' width='${1600}' height='${1000}'><foreignObject width='100%' height='100%'>${(new XMLSerializer).serializeToString(new DOMParser().parseFromString(this.inner, "text/html"))}</foreignObject></svg>`;
-
-        const svg = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
-
-        // svgを生成した後、それをimgで読みたいため、urlを生成する
-        const DOMURL = self.URL || self.webkitURL || self;
-        const url = DOMURL.createObjectURL(svg);
-
-        const img = new Image();
-        img.src = url;
-
-        // GO!!
-        img.onload = () => {
-          this.ctx.drawImage(img, 0, 0);
-          // urlを破棄する
-          DOMURL.revokeObjectURL(url);
-        }
-      }, 1000 / this.fps)
     }
     openSpeech() {
       this.speechOpening = true;
