@@ -1,4 +1,4 @@
-  function shuffle(array) {
+    function shuffle(array) {
     array.sort(() => Math.random() - 0.5);
   }
   var shuffleDict = (dict) => {
@@ -585,7 +585,7 @@
     }, fps = 60, startSeen = "main", useController = true) {
       console.log('gameEngineLoaded!');
       this.keyboard = new keyboard()
-      document.body.innerHTML += `<canvas width="1600"height="1000"style="overflow: hidden;background:rgb(0, 0, 0);width:160vh;height:100vh;position:absolute;top: 0px;left: 0px;"></canvas>`
+      document.body.innerHTML += `<test style="overflow: hidden;background:rgb(0, 0, 0);width:160vh;height:100vh;position:absolute;top: 0px;left: 0px;"></test><canvas width="1600"height="1000"style="overflow: hidden;background:rgba(0,0, 0, 0);width:160vh;height:100vh;position:absolute;top: 0px;left: 0px;"></canvas>`
       if (useController) { this.controller = new controller() }
       this.main = taglist("canvas")[0];
       this.ctx = this.main.getContext('2d');
@@ -676,22 +676,26 @@
           }
         } catch (e) { }
         this.another()
-        const data = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0, 0, ${1600}, ${1000}' width='${1600}' height='${1000}'><foreignObject width='100%' height='100%'><div xmlns="http://www.w3.org/1999/xhtml">${(new XMLSerializer).serializeToString(new DOMParser().parseFromString(this.inner, "text/html"))}</div></foreignObject></svg>`;
+        if(false){
+          const data = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0, 0, ${1600}, ${1000}' width='${1600}' height='${1000}'><foreignObject width='100%' height='100%'><div xmlns="http://www.w3.org/1999/xhtml">${(new XMLSerializer).serializeToString(new DOMParser().parseFromString(this.inner, "text/html"))}</div></foreignObject></svg>`;
 
-        const svg = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
+          const svg = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
 
-        // svgを生成した後、それをimgで読みたいため、urlを生成する
-        const DOMURL = self.URL || self.webkitURL || self;
-        const url = DOMURL.createObjectURL(svg);
+          // svgを生成した後、それをimgで読みたいため、urlを生成する
+          const DOMURL = self.URL || self.webkitURL || self;
+          const url = DOMURL.createObjectURL(svg);
 
-        const img = new Image();
-        img.src = url;
+          const img = new Image();
+          img.src = url;
 
-        // GO!!
-        img.onload = () => {
-          this.ctx.drawImage(img, 0, 0);
-          // urlを破棄する
-          DOMURL.revokeObjectURL(url);
+          // GO!!
+          img.onload = () => {
+            this.ctx.drawImage(img, 0, 0);
+            // urlを破棄する
+            DOMURL.revokeObjectURL(url);
+          }
+        }else{
+          this.test.innerHTML=this.inner
         }
       }, 1000 / this.fps)
     }
