@@ -731,8 +731,8 @@
   }
 
 
-  var textChange = (text) => {
-    return text.split("/")
+  var textChange = (text,A="/") => {
+    return text.split(A)
   }
   class novelGame extends Game {
     constructor(seen, fps, statrSeen, useController = true) {
