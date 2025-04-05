@@ -582,9 +582,10 @@
         },
         sprites: {}
       }
-    }, fps = 60, startSeen = "main", useController = true) {
+    }, fps = 60, startSeen = "main", useController = true,useFontOfOut=false) {
       console.log('gameEngineLoaded!');
       this.keyboard = new keyboard()
+      this.useFontOfOut=useFontOfOut
       document.body.innerHTML += `<test style="overflow: hidden;background:rgb(0, 0, 0);width:160vh;height:100vh;position:absolute;top: 0px;left: 0px;"></test><canvas width="1600"height="1000"style="overflow: hidden;background:rgba(0,0, 0, 0);width:160vh;height:100vh;position:absolute;top: 0px;left: 0px;"></canvas>`
       if (useController) { this.controller = new controller() }
       this.main = taglist("canvas")[0];
@@ -594,8 +595,6 @@
       this.seens = seen;
       this.fps = fps
       this.update;
-      this.drawingMain = setInterval(() => {
-      }, 1000 / this.fps)
       this.basemouse = { x: 0, y: 0, width: 1, height: 1 }
       this.mouse = { x: 0, y: 0, width: 1, height: 1, click: false }
       this.mouseposition = (e) => {
@@ -676,7 +675,7 @@
           }
         } catch (e) { }
         this.another()
-        if(false){
+        if(!this.useFontOfOut){
           const data = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0, 0, ${1600}, ${1000}' width='${1600}' height='${1000}'><foreignObject width='100%' height='100%'><div xmlns="http://www.w3.org/1999/xhtml">${(new XMLSerializer).serializeToString(new DOMParser().parseFromString(this.inner, "text/html"))}</div></foreignObject></svg>`;
 
           const svg = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
