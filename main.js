@@ -734,8 +734,8 @@
     return text.split(A)
   }
   class novelGame extends Game {
-    constructor(seen, fps, statrSeen, useController = true) {
-      super(seen, fps, statrSeen, useController);
+    constructor(seen, fps, statrSeen, useController = true,useFontOfOut) {
+      super(seen, fps, statrSeen, useController,useFontOfOut);
       this.speechColor = "rgb(0,0,0)";
       this.speechOpening = false;
       this.speechText = "";
@@ -907,8 +907,8 @@
     }
   }
   class novelGameToTouch extends novelGame {
-    constructor(seen, fps, statrSeen) {
-      super(seen, fps, statrSeen, false);
+    constructor(seen, fps, statrSeen,useFontOfOut) {
+      super(seen, fps, statrSeen, false,useFontOfOut);
 
       this.talkSpeech = async (
         character = "character",
