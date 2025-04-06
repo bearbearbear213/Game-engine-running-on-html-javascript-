@@ -1,4 +1,4 @@
-    function shuffle(array) {
+  function shuffle(array) {
     array.sort(() => Math.random() - 0.5);
   }
   var shuffleDict = (dict) => {
@@ -582,10 +582,10 @@
         },
         sprites: {}
       }
-    }, fps = 60, startSeen = "main", useController = true,useFontOfOut=false) {
+    }, fps = 60, startSeen = "main", useController = true, useFontOfOut = false) {
       console.log('gameEngineLoaded!');
       this.keyboard = new keyboard()
-      this.useFontOfOut=useFontOfOut
+      this.useFontOfOut = useFontOfOut
       document.body.innerHTML += `<test style="overflow: hidden;background:rgb(0, 0, 0);width:160vh;height:100vh;position:absolute;top: 0px;left: 0px;"></test><canvas width="1600"height="1000"style="overflow: hidden;background:rgba(0,0, 0, 0);width:160vh;height:100vh;position:absolute;top: 0px;left: 0px;"></canvas>`
       if (useController) { this.controller = new controller() }
       this.main = taglist("canvas")[0];
@@ -603,7 +603,7 @@
         this.mouse.x = (this.basemouse.x) + this.seen.camera.x
         this.mouse.y = (this.basemouse.y) + this.seen.camera.y
       }
-      this.another=()=>{}
+      this.another = () => { }
       this.main.addEventListener("pointermove", this.mouseposition)
       this.main.addEventListener("pointerdown", this.mouseposition)
       this.main.addEventListener("pointerdown", () => { this.mouse.click = true })
@@ -675,7 +675,7 @@
           }
         } catch (e) { }
         this.another()
-        if(!this.useFontOfOut){
+        if (!this.useFontOfOut) {
           const data = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0, 0, ${1600}, ${1000}' width='${1600}' height='${1000}'><foreignObject width='100%' height='100%'><div xmlns="http://www.w3.org/1999/xhtml">${(new XMLSerializer).serializeToString(new DOMParser().parseFromString(this.inner, "text/html"))}</div></foreignObject></svg>`;
 
           const svg = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
@@ -693,8 +693,8 @@
             // urlを破棄する
             DOMURL.revokeObjectURL(url);
           }
-        }else{
-          this.test.innerHTML=this.inner
+        } else {
+          this.test.innerHTML = this.inner
         }
       }, 1000 / this.fps)
     }
@@ -730,12 +730,12 @@
   }
 
 
-  var textChange = (text,A="/") => {
+  var textChange = (text, A = "/") => {
     return text.split(A)
   }
   class novelGame extends Game {
-    constructor(seen, fps, statrSeen, useController = true,useFontOfOut) {
-      super(seen, fps, statrSeen, useController,useFontOfOut);
+    constructor(seen, fps, statrSeen, useFontOfOut, useController = true,) {
+      super(seen, fps, statrSeen, useController, useFontOfOut);
       this.speechColor = "rgb(0,0,0)";
       this.speechOpening = false;
       this.speechText = "";
@@ -745,17 +745,18 @@
 
 
       this.changeSpeech("", "", "")
-      
-      this.another=()=>{this.inner += `${this.moremore}<speech style="  position:absolute;  top:65%;  left:10%;  height:30%;  width:80%;  background:rgba(255,255,255,0.7);  border-radius: 5vh;  border: 1vh solid rgb(0,0,0);  overflow: auto;  font-size:5vh;  color:${this.speechColor};  display:${this.speechOpening ? "block" : "none"}"><p>  ${this.speechText}</p></speech><div style="  position:absolute;  top:60%;  left:5%;  height:10%;  width:30%;  background:rgba(255,255,255,0.7);  border-radius: 5vh;  border: 1vh solid rgb(0,0,0);  overflow: auto;  font-size:7vh;  color:${this.speechColor};  display:${this.speechOpening ? "block" : "none"}"><div>  ${this.speechCharacter}</div></div><div style="font-size:10vh">${this.more}</div>`;}
+
+      this.another = () => { this.inner += `${this.moremore}<speech style="  position:absolute;  top:65%;  left:10%;  height:30%;  width:80%;  background:rgba(255,255,255,0.7);  border-radius: 5vh;  border: 1vh solid rgb(0,0,0);  overflow: auto;  font-size:5vh;  color:${this.speechColor};  display:${this.speechOpening ? "block" : "none"}"><p>  ${this.speechText}</p></speech><div style="  position:absolute;  top:60%;  left:5%;  height:10%;  width:30%;  background:rgba(255,255,255,0.7);  border-radius: 5vh;  border: 1vh solid rgb(0,0,0);  overflow: auto;  font-size:7vh;  color:${this.speechColor};  display:${this.speechOpening ? "block" : "none"}"><div>  ${this.speechCharacter}</div></div><div style="font-size:10vh">${this.more}</div>`; }
     }
     setCharacters(characters = {}) {
       this.charactersData = characters
     }
-    drawCharacters(left, right = "", light = 1, lx = 0, rx = 0) {
+    drawCharacters(left = "", right = "", light = 1, lx = 0, rx = 0) {
       /*imagesize=1:1*/
       this.moremore = ""
-      this.moremore += `<img src="${this.charactersData[left]}" width="1000"height="1000"style="position:absolute;${!light == 1 ? "filter: grayscale(80%);top:-10%;" : "top:-20%;"}width:200vh;height:200vh;left:${lx - 40}%;"></img>`
-      this.moremore += `<img src="${this.charactersData[right]}" width="1000"height="1000"style="position:absolute;${!light == 1 ? "top:-20%;" : "filter: grayscale(80%);top:-10%;"}width:200vh;height:200vh;right:${rx - 40}%;"></img>`
+      var tag = this.useFontOfOut ? "img" : "image"
+      var src = this.useFontOfOut ? "src" : "href"
+      this.moremore += `${(left == "") ? "" : `<${tag} ${src}="${this.charactersData[left]}" width="1000"height="1000"style="position:absolute;${!light == 1 ? "filter: grayscale(80%);top:-10%;" : "top:-20%;"}width:200vh;height:200vh;left:${lx - 40}%;"></${tag}>`}${(right == "") ? "" : `<${tag} ${src}="${this.charactersData[right]}" width="1000"height="1000"style="position:absolute;${!light == 1 ? "top:-20%;" : "filter: grayscale(80%);top:-10%;"}width:200vh;height:200vh;right:${rx - 40}%;"></${tag}>`}`
     }
     stopDrawCharacters() {
       this.moremore = ""
@@ -907,8 +908,8 @@
     }
   }
   class novelGameToTouch extends novelGame {
-    constructor(seen, fps, statrSeen,useFontOfOut) {
-      super(seen, fps, statrSeen, false,useFontOfOut);
+    constructor(seen, fps, statrSeen, useFontOfOut) {
+      super(seen, fps, statrSeen, useFontOfOut, false,);
 
       this.talkSpeech = async (
         character = "character",
