@@ -754,8 +754,8 @@
     drawCharacters(left = "", right = "", light = 1, lx = 0, rx = 0) {
       /*imagesize=1:1*/
       this.moremore = ""
-      var tag = this.useFontOfOut ? "img" : "image"
-      var src = this.useFontOfOut ? "src" : "href"
+      var tag = "img" 
+      var src = "src" 
       this.moremore += `${(left == "") ? "" : `<${tag} ${src}="${this.charactersData[left]}" width="1000"height="1000"style="position:absolute;${!light == 1 ? "filter: grayscale(80%);top:-10%;" : "top:-20%;"}width:200vh;height:200vh;left:${lx - 40}%;"></${tag}>`}${(right == "") ? "" : `<${tag} ${src}="${this.charactersData[right]}" width="1000"height="1000"style="position:absolute;${!light == 1 ? "top:-20%;" : "filter: grayscale(80%);top:-10%;"}width:200vh;height:200vh;right:${rx - 40}%;"></${tag}>`}`
     }
     stopDrawCharacters() {
