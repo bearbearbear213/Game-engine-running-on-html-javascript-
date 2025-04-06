@@ -746,7 +746,7 @@
 
       this.changeSpeech("", "", "")
 
-      this.another = () => { this.inner += `${this.moremore}<speech style="  position:absolute;  top:65%;  left:10%;  height:30%;  width:80%;  background:rgba(255,255,255,0.7);  border-radius: 5vh;  border: 1vh solid rgb(0,0,0);  overflow: auto;  font-size:5vh;  color:${this.speechColor};  display:${this.speechOpening ? "block" : "none"}"><p>  ${this.speechText}</p></speech><div style="  position:absolute;  top:60%;  left:5%;  height:10%;  width:30%;  background:rgba(255,255,255,0.7);  border-radius: 5vh;  border: 1vh solid rgb(0,0,0);  overflow: auto;  font-size:7vh;  color:${this.speechColor};  display:${this.speechOpening ? "block" : "none"}"><div>  ${this.speechCharacter}</div></div><div style="font-size:10vh">${this.more}</div>`; }
+      this.another = () => { this.inner += `${this.moremore}<speech style="  position:absolute;  top:65%;  left:10%;  height:30%;  width:80%;  background:rgba(255,255,255,1);  border-radius: 5vh;  border: 1vh solid rgb(0,0,0);  overflow: auto;  font-size:5vh;  color:${this.speechColor};  display:${this.speechOpening ? "block" : "none"}"><p>  ${this.speechText}</p></speech><div style="  position:absolute;  top:60%;  left:5%;  height:10%;  width:30%;  background:rgba(255,255,255,1);  border-radius: 5vh;  border: 1vh solid rgb(0,0,0);  overflow: auto;  font-size:7vh;  color:${this.speechColor};  display:${this.speechOpening ? "block" : "none"}"><div>  ${this.speechCharacter}</div></div><div style="font-size:10vh">${this.more}</div>`; }
     }
     setCharacters(characters = {}) {
       this.charactersData = characters
@@ -854,7 +854,7 @@
           for (var n of answers) {
             this.more += `<div style="
             position:absolute;
-            background:rgba(255,255,255,0.7);
+            background:rgba(255,255,255,1);
             border-radius: 5vh;
             border: 1vh solid rgb(0,0,0);
             overflow: auto;
@@ -981,7 +981,7 @@
             for (var n of answers) {
               this.more += `<div style="
             position:absolute;
-            background:rgba(255,255,255,0.7);
+            background:rgba(255,255,255,1);
             border-radius: 5vh;
             border: 1vh solid rgb(0,0,0);
             overflow: auto;
