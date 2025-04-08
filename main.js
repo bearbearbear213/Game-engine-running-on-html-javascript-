@@ -743,7 +743,71 @@
       this.more = ""
       this.moremore = ""
 
-
+      
+  this.numPad=async(len=5)=>{
+    var input=""
+    this.stopUpdate()
+    await new Promise(async(resolve)=>{
+      var f=0
+        var befor=false
+      var a=setInterval(async()=>{
+        f++
+      if(input.length==len){
+        clearInterval(a)
+        resolve()
+      }
+      if(this.mouse.click&&!befor){
+        for(var n of [1,2,3,4,5,6,7,8,9]){
+          if((40+Math.floor((n-1)/3)*16)<this.mouse.y&&this.mouse.y<(50+Math.floor((n-1)/3)*16)){if(n%3==1){
+            if(60<this.mouse.x&&this.mouse.x<70){
+              input=`${input}${n}`
+            }
+          }if(n%3==2){
+            if(75<this.mouse.x&&this.mouse.x<85){
+              input=`${input}${n}`
+            }
+          }if(n%3==0){
+            if(90<this.mouse.x&&this.mouse.x<100){
+              input=`${input}${n}`
+            }
+          }}
+        }
+        if(84<this.mouse.y&&this.mouse.y<94){
+        if(60<this.mouse.x&&this.mouse.x<85){
+          input=`${input}${0}`
+        }
+          if(90<this.mouse.x&&this.mouse.x<100){
+            if(input.length==0){
+              clearInterval(a)
+              resolve()
+            }
+            input=input.slice(0, input.length -1)
+          }
+        }
+      }
+      befor=this.mouse.click
+      
+      this.moremore=`
+      <div style="position:absolute;width:100%;height:100%;background:rgb(150,150,150);"><div style="position:absolute;top:38%;left:35%;width:30%;height:60%;background:rgb(100,100,100);">
+      <div style="position:absolute;top:5%;left:7%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">1</div>
+      <div style="position:absolute;top:5%;left:38%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">2</div>
+      <div style="position:absolute;top:5%;left:70%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">3</div>
+      <div style="position:absolute;top:29%;left:7%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">4</div>
+      <div style="position:absolute;top:29%;left:38%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">5</div>
+      <div style="position:absolute;top:29%;left:70%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">6</div>
+      <div style="position:absolute;top:53%;left:7%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">7</div>
+      <div style="position:absolute;top:53%;left:38%;width:24%;height:18%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">8</div>
+      <div style="position:absolute;top:53%;left:70%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">9</div>
+      <div style="position:absolute;top:76%;left:7%;width:57%;height:20%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">0</div>
+      <div style="position:absolute;top:76%;left:69%;width:24%;height:18%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">×</div>
+      </div><div style="position:absolute;top:10%;left:30%;width:40%;height:17%;background:rgb(0,0,0);color:rgb(255,255,255);font-size:10vh;">${input}${((Math.round(f/100))%2)==0?"_":""}</div></div>
+      `
+      },10)
+    })
+    this.moremore=""
+    return input
+      
+  }
       this.changeSpeech("", "", "")
 
       this.another = () => { this.inner += `${this.moremore}<speech style="  position:absolute;  top:65%;  left:10%;  height:30%;  width:80%;  background:rgba(255,255,255,1);  border-radius: 5vh;  border: 1vh solid rgb(0,0,0);  overflow: auto;  font-size:5vh;  color:${this.speechColor};  display:${this.speechOpening ? "block" : "none"}"><p>  ${this.speechText}</p></speech><div style="  position:absolute;  top:60%;  left:5%;  height:10%;  width:30%;  background:rgba(255,255,255,1);  border-radius: 5vh;  border: 1vh solid rgb(0,0,0);  overflow: auto;  font-size:7vh;  color:${this.speechColor};  display:${this.speechOpening ? "block" : "none"}"><div>  ${this.speechCharacter}</div></div><div style="font-size:10vh">${this.more}</div>`; }
@@ -1096,69 +1160,4 @@
         b: { x: 80, y: 50, width: 160, height: 50, img: backgroundImg },
       }
     }
-  }
-
-  game.numPad=async(len=5)=>{
-    var input=""
-    game.stopUpdate()
-    await new Promise(async(resolve)=>{
-      var f=0
-        var befor=false
-      var a=setInterval(async()=>{
-        f++
-      if(input.length==len){
-        clearInterval(a)
-        resolve()
-      }
-      if(game.mouse.click&&!befor){
-        for(var n of [1,2,3,4,5,6,7,8,9]){
-          if((40+Math.floor((n-1)/3)*16)<game.mouse.y&&game.mouse.y<(50+Math.floor((n-1)/3)*16)){if(n%3==1){
-            if(60<game.mouse.x&&game.mouse.x<70){
-              input=`${input}${n}`
-            }
-          }if(n%3==2){
-            if(75<game.mouse.x&&game.mouse.x<85){
-              input=`${input}${n}`
-            }
-          }if(n%3==0){
-            if(90<game.mouse.x&&game.mouse.x<100){
-              input=`${input}${n}`
-            }
-          }}
-        }
-        if(84<game.mouse.y&&game.mouse.y<94){
-        if(60<game.mouse.x&&game.mouse.x<85){
-          input=`${input}${0}`
-        }
-          if(90<game.mouse.x&&game.mouse.x<100){
-            if(input.length==0){
-              clearInterval(a)
-              resolve()
-            }
-            input=input.slice(0, input.length -1)
-          }
-        }
-      }
-      befor=game.mouse.click
-      
-      game.moremore=`
-      <div style="position:absolute;width:100%;height:100%;background:rgb(150,150,150);"><div style="position:absolute;top:38%;left:35%;width:30%;height:60%;background:rgb(100,100,100);">
-      <div style="position:absolute;top:5%;left:7%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">1</div>
-      <div style="position:absolute;top:5%;left:38%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">2</div>
-      <div style="position:absolute;top:5%;left:70%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">3</div>
-      <div style="position:absolute;top:29%;left:7%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">4</div>
-      <div style="position:absolute;top:29%;left:38%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">5</div>
-      <div style="position:absolute;top:29%;left:70%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">6</div>
-      <div style="position:absolute;top:53%;left:7%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">7</div>
-      <div style="position:absolute;top:53%;left:38%;width:24%;height:18%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">8</div>
-      <div style="position:absolute;top:53%;left:70%;width:24%;height:19%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">9</div>
-      <div style="position:absolute;top:76%;left:7%;width:57%;height:20%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">0</div>
-      <div style="position:absolute;top:76%;left:69%;width:24%;height:18%;background:rgb(50,50,50);color:rgb(255,255,255);font-size:7vh;">×</div>
-      </div><div style="position:absolute;top:10%;left:30%;width:40%;height:17%;background:rgb(0,0,0);color:rgb(255,255,255);font-size:10vh;">${input}${((Math.round(f/100))%2)==0?"_":""}</div></div>
-      `
-      },10)
-    })
-    game.moremore=""
-    return input
-      
   }
