@@ -675,7 +675,7 @@
           }
         } catch (e) { }
         this.another()
-        if(this.inner==this.befor){
+        if(!this.inner==this.befor){
         if (!this.useFontOfOut) {
           const data = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0, 0, ${1600}, ${1000}' width='${1600}' height='${1000}'><foreignObject width='100%' height='100%'><div xmlns="http://www.w3.org/1999/xhtml">${(new XMLSerializer).serializeToString(new DOMParser().parseFromString(this.inner, "text/html"))}</div></foreignObject></svg>`;
 
