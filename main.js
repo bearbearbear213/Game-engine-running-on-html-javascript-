@@ -36,8 +36,8 @@
   var random = (max, min) => { return Math.floor(Math.random() * (max - min)) + min; }
   var copy = _.cloneDeep
   var make_angle = (angle, speed = 10) => {
-    const x = speed * Math.cos(angle)
-    const y = speed * Math.sin(angle)
+    const x = speed * Math.cos(angle*(Math.PI / 180))
+    const y = speed * Math.sin(angle*(Math.PI / 180))
     return { x: x, y: y };
   }
 
