@@ -1185,3 +1185,78 @@
       }
     }
   }
+  var sampleTitleToTouch = (name = "title", to = "main", backgroungColor = "rgb(0,0,0)", backgroundImg = "") => {
+    return {
+      flag: false,
+      background: {
+        color: backgroungColor,
+        start: () => {
+          game.addSprite("title", {
+            titleName: name,
+            to: to,
+            x: 80,
+            y: 60,
+            width: 160,
+            height: 60,
+            output_rect: false,
+            a: 0,
+            b: 0,
+            c: 0,
+            img: ``,
+            start: (self) => {
+              game.deleteSprite("A")
+              game.seen.d = 0
+            },
+            update: (self) => {
+              if ((game.seen.d == 1)) {
+                self.y -= 2;
+                if (self.y < -100) {
+                  game.changeSeen(self.to)
+                  game.deleteSprite("A")
+                  self.x = 80
+                  self.y = 60
+                }
+              } else {
+                if (self.a < 1) {
+                  self.img = `<div style="text-align: center;color:rgba(255,0,0,${self.a});font-size:25vh"><b>${self.titleName}</b></div>`
+                  self.a += 0.02
+                } else if (self.b < 25) {
+                  self.img = `<div style="text-align: center;color:rgba(255,0,0,1);font-size:${25 - (self.b * 0.2)}vh"><b>${self.titleName}</b></div>`
+                  self.y -= 0.8
+                  self.b++
+                } else {
+                  if (self.c == 0) {
+                    self.c = 1
+                    game.addSprite("A", {
+                      a: 0, x: 80, y: 70, width: 160, height: 20, update: (self) => {
+                        if (self.a < 1) {
+                          self.img = `<div style="font-size:10vh;color:rgba(255,255,255,${self.a});text-align: center;">click/touch to start</div>`
+                          self.a += 0.05
+                        } else {
+                          if (game.controller.get().btn) {
+                            game.seen.d = 1
+                          }
+                        }
+                        if ((game.seen.d == 1 && self.y > -100)) {
+                          self.y -= 2;
+                        }
+                      }
+                    })
+                  }
+                }
+              }
+            }
+          })
+        },
+        update: (self) => {
+        }
+      }, camera: {
+        x: 0,
+        y: 0,
+      },
+      d: 0,
+      sprites: {
+        b: { x: 80, y: 50, width: 160, height: 50, img: backgroundImg },
+      }
+    }
+  }
