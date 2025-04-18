@@ -10,6 +10,29 @@
     }
     return b
   }
+    class GameObject {
+      constructor(
+        x = 80,
+        y = 50,
+        width = 10,
+        height = 10,
+        start = () => {},
+        update = () => {},
+        img="",
+        more = {},
+      ) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.update = update;
+        this.img=img
+        this.start = start;
+        for (var n of Object.keys(more)) {
+          this[n] = more[n];
+        }
+      }
+    }
   var random = (max, min) => { return Math.floor(Math.random() * (max - min)) + min; }
   var copy = _.cloneDeep
   var make_angle = (angle, speed = 10) => {
